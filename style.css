@@ -1,0 +1,28 @@
+body {
+  background-color: black;
+  color: limegreen;
+  font-family: monospace;
+  padding: 20px;
+}
+.terminal {
+  max-width: 600px;
+  margin: auto;
+}
+.locked {
+  display: none;
+  border-top: 1px solid limegreen;
+  margin-top: 20px;
+  padding-top: 10px;
+}
+input, button {
+  background: black;
+  border: 1px solid limegreen;
+  color: limegreen;
+  padding: 5px;
+  margin: 5px 0;
+}
+button:hover {
+  background: limegreen;
+  color: black;
+  cursor: pointer;
+}
