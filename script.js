@@ -13,13 +13,31 @@ function caesarShift(str, amount) {
   return output;
 }
 
+function unlockSection(id) {
+  let section = document.getElementById(id);
+  section.style.display = "block";
+  section.classList.add("unlocked");
+}
+
 function checkChallenge1() {
   let input = document.getElementById("input1").value.trim();
   let correct = caesarShift("Mjqqt", 5); // decrypt with shift 5
   if (input.toLowerCase() === correct.toLowerCase()) {
-    document.getElementById("about").style.display = "block";
     document.getElementById("result1").innerText = "✅ Correct! Section unlocked.";
+    unlockSection("about");
+    unlockSection("challenge2");
   } else {
     document.getElementById("result1").innerText = "❌ Incorrect. Try again.";
+  }
+}
+
+function checkChallenge2() {
+  let input = document.getElementById("input2").value.trim();
+  let correct = atob("c2tpbGxzX2ZsYWc="); // hidden in HTML comment
+  if (input === correct) {
+    document.getElementById("result2").innerText = "✅ Correct! Skills section unlocked.";
+    unlockSection("skills");
+  } else {
+    document.getElementById("result2").innerText = "❌ Nope, try again.";
   }
 }

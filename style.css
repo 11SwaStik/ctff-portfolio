@@ -26,3 +26,11 @@ button:hover {
   color: black;
   cursor: pointer;
 }
+.unlocked {
+  animation: unlockGlow 1s ease-out;
+}
+@keyframes unlockGlow {
+  0% { background-color: rgba(0,255,0,0.2); }
+  100% { background-color: transparent; }
+}
+
