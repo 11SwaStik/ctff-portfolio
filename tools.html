@@ -59,3 +59,13 @@
 
     function scanPage() {
       let clues = document.querySelectorAll("[data-clue]");
+      if (clues.length > 0) {
+        document.getElementById("scanResult").innerText =
+          "Found clues: " + Array.from(clues).map(c => c.dataset.clue).join(", ");
+      } else {
+        document.getElementById("scanResult").innerText = "No clues found here.";
+      }
+    }
+  </script>
+</body>
+</html>
