@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Hacker Toolkit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🔧 Hacker Toolkit</h1>
+
+  <section>
+    <h2>Caesar Cipher Decoder</h2>
+    <input id="caesarText" placeholder="Encrypted text">
+    <input id="shift" type="number" value="5">
+    <button onclick="decodeCaesar()">Decode</button>
+    <p id="caesarResult"></p>
+  </section>
+
+  <section>
+    <h2>Base64 Decoder</h2>
+    <input id="base64Text" placeholder="Base64 text">
+    <button onclick="decodeBase64()">Decode</button>
+    <p id="base64Result"></p>
+  </section>
+
+  <section>
+    <h2>Page Scanner</h2>
+    <button onclick="scanPage()">Scan for clues</button>
+    <p id="scanResult"></p>
+  </section>
+
+  <script>
+    function decodeCaesar() {
+      let text = document.getElementById("caesarText").value;
+      let shift = parseInt(document.getElementById("shift").value);
+      let output = '';
+      for (let i = 0; i < text.length; i++) {
+        let c = text.charCodeAt(i);
+        if (c >= 65 && c <= 90) {
+          output += String.fromCharCode((c - 65 - shift + 26) % 26 + 65);
+        } else if (c >= 97 && c <= 122) {
+          output += String.fromCharCode((c - 97 - shift + 26) % 26 + 97);
+        } else {
+          output += text.charAt(i);
+        }
+      }
+      document.getElementById("caesarResult").innerText = "Decoded: " + output;
+    }
+
+    function decodeBase64() {
+      try {
+        let text = document.getElementById("base64Text").value;
+        let decoded = atob(text);
+        document.getElementById("base64Result").innerText = "Decoded: " + decoded;
+      } catch (e) {
+        document.getElementById("base64Result").innerText = "Invalid Base64";
+      }
+    }
+
+    function scanPage() {
+      let clues = document.querySelectorAll("[data-clue]");
