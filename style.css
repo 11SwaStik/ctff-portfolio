@@ -1,6 +1,6 @@
 body {
   background-color: black;
-  color: limegreen;
+  color: #ffb6c1; /* light pink */
   font-family: monospace;
   padding: 20px;
 }
@@ -10,19 +10,19 @@ body {
 }
 .locked {
   display: none;
-  border-top: 1px solid limegreen;
+  border-top: 1px solid #ffb6c1;
   margin-top: 20px;
   padding-top: 10px;
 }
 input, button {
   background: black;
-  border: 1px solid limegreen;
-  color: limegreen;
+  border: 1px solid #ffb6c1;
+  color: #ffb6c1;
   padding: 5px;
   margin: 5px 0;
 }
 button:hover {
-  background: limegreen;
+  background: #ffb6c1;
   color: black;
   cursor: pointer;
 }
@@ -30,7 +30,13 @@ button:hover {
   animation: unlockGlow 1s ease-out;
 }
 @keyframes unlockGlow {
-  0% { background-color: rgba(0,255,0,0.2); }
+  0% { background-color: rgba(255,182,193,0.2); } /* pink glow */
   100% { background-color: transparent; }
 }
-
+a {
+  color: #ffb6c1;
+  text-decoration: underline;
+}
+a:hover {
+  color: #ffcce0; /* slightly lighter pink on hover */
+}
