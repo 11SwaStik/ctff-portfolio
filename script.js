@@ -159,3 +159,56 @@ function emitNetworkNoise() {
     });
   }
 })();
+// ——— Starfield Background ———
+(function starfield() {
+  const canvas = document.getElementById('bgCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  let w, h;
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+    stars = [];
+    for (let i = 0; i < 100; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        z: Math.random() * w,
+      });
+    }
+  }
+
+  function draw() {
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#ffb6c1';
+    stars.forEach(s => {
+      let k = 128.0 / s.z;
+      let px = s.x * k + w / 2;
+      let py = s.y * k + h / 2;
+      if (px >= 0 && px <= w && py >= 0 && py <= h) {
+        let size = (1 - s.z / w) * 3;
+        ctx.beginPath();
+        ctx.arc(px, py, size, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+      s.z -= 2;
+      if (s.z <= 0) {
+        s.x = Math.random() * w - w / 2;
+        s.y = Math.random() * h - h / 2;
+        s.z = w;
+      }
+    });
+  }
+
+  function loop() {
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  loop();
+  window.addEventListener('resize', resize);
+})();
