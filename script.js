@@ -203,6 +203,14 @@ function emitNetworkNoise() {
   console.log('%c— network scan —', 'color:#ffb6c1; font-weight:bold;');
   rows.forEach(r => console.log('%c' + r, 'color:#ffb6c1;'));
   console.log('%cHint: Which service name matches a project above?', 'color:#ffb6c1; opacity:0.8;');
+  console.log("%c\n" +
+"   ____       _        _   _ _   _ _ _ _ \n" +
+"  / ___|  ___| |_ __ _| |_(_) |_(_) | (_)\n" +
+"  \\___ \\ / _ \\ __/ _` | __| | __| | | | |\n" +
+"   ___) |  __/ || (_| | |_| | |_| | | | |\n" +
+"  |____/ \\___|\\__\\__,_|\\__|_|\\__|_|_|_|_|\n" +
+"   Find all flags to unlock the résumé.  \n", "color:#ffb6c1");
+
 }
 
 // ——— Page init ———
