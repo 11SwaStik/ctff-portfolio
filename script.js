@@ -190,8 +190,8 @@ function checkChallenge5() {
   }
 }
 
-// ——— Console Logs for Challenge 3 ———
 function emitNetworkNoise() {
+  // Fake network scan output for Challenge 3
   const rows = [
     '[scan] 10.0.0.12:443 — tls service (ok)',
     '[scan] 10.0.0.15:22 — ssh (key only)',
@@ -200,9 +200,12 @@ function emitNetworkNoise() {
     '[scan] 10.0.0.22:8080 — http (redirect)',
     '[scan] cache.node — miss rate 2.1%',
   ];
+
   console.log('%c— network scan —', 'color:#ffb6c1; font-weight:bold;');
   rows.forEach(r => console.log('%c' + r, 'color:#ffb6c1;'));
   console.log('%cHint: Which service name matches a project above?', 'color:#ffb6c1; opacity:0.8;');
+
+  // ASCII art easter egg in console
   console.log("%c\n" +
 "   ____       _        _   _ _   _ _ _ _ \n" +
 "  / ___|  ___| |_ __ _| |_(_) |_(_) | (_)\n" +
@@ -211,7 +214,15 @@ function emitNetworkNoise() {
 "  |____/ \\___|\\__\\__,_|\\__|_|\\__|_|_|_|_|\n" +
 "   Find all flags to unlock the résumé.  \n", "color:#ffb6c1");
 
+  // Show blinking F12 hint after 4 seconds if Challenge 3 not solved
+  if (!solved.c3) {
+    const hintEl = document.getElementById('c3-hint');
+    if (hintEl) {
+      setTimeout(() => { hintEl.style.display = 'inline-block'; }, 4000);
+    }
+  }
 }
+
 
 // ——— Page init ———
 (function init() {
