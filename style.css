@@ -226,3 +226,13 @@ h1, h2, h3 {
   z-index: -2;
   background: radial-gradient(circle at center, #1a0014 0%, #000 100%);
 }
+.hint-blink {
+  animation: blinkHint 1s infinite;
+  color: #ffb6c1;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+@keyframes blinkHint {
+  0%, 50%, 100% { opacity: 0.8; }
+  25%, 75% { opacity: 0.3; }
+}
