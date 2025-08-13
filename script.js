@@ -55,14 +55,18 @@ function fireConfetti() {
 }
 
 
+
+
 function unlockSection(id) {
   const el = document.getElementById(id);
   if (!el) return;
   el.style.display = 'block';
   el.classList.add('unlocked');
+  fireConfetti(); // 🎉 burst when unlocked
   saveProgress();
   updateProgressUI();
 }
+
 
 function setResult(id, msg, ok=false) {
   const el = document.getElementById(id);
