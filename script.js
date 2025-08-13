@@ -226,6 +226,14 @@ function emitNetworkNoise() {
     resetBtn.addEventListener('click', () => {
       localStorage.removeItem('ctfProgress');
       location.reload();
+      // Show blinking hint for Challenge 3 if not solved yet
+if (!solved.c3) {
+  const hintEl = document.getElementById('c3-hint');
+  if (hintEl) {
+    setTimeout(() => { hintEl.style.display = 'inline-block'; }, 4000); // show after 4s
+  }
+}
+
     });
   }
 })();
