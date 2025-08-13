@@ -84,17 +84,19 @@
       </ul>
     </section>
 
-    <!-- CHALLENGE 3 -->
-    <section id="challenge3" class="card locked">
-      <h2>Challenge 3 · Network Noise</h2>
-      <p>Our “scanner” dumped some logs to the console. Spot the relevant asset and enter its name.</p>
-      <p class="muted">Open DevTools (F12) → Console. Look for a service that matches a project you might expect.</p>
-      <div class="controls">
-        <input id="input3" placeholder="project/service name" autocomplete="off" />
-        <button onclick="checkChallenge3()">submit</button>
-      </div>
-      <p id="result3" class="result"></p>
-    </section>
+   <!-- CHALLENGE 3 -->
+<section id="challenge3" class="card locked">
+  <h2>Challenge 3 · Network Noise</h2>
+  <p>Our “scanner” dumped some logs to the console. Spot the relevant asset and enter its name.</p>
+  <p class="muted">Open DevTools (<code>F12</code>) → Console. Look for a service that matches a project you might expect.</p>
+  <span id="c3-hint" class="hint-blink" style="display:none;">💡 Hint: Press F12 to open Developer Tools.</span>
+  <div class="controls">
+    <input id="input3" placeholder="project/service name" autocomplete="off" />
+    <button onclick="checkChallenge3()">submit</button>
+  </div>
+  <p id="result3" class="result"></p>
+</section>
+
 
     <!-- PROJECTS -->
     <section id="projects" class="card locked">
