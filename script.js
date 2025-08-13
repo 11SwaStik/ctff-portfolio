@@ -74,6 +74,7 @@ function setResult(id, msg, ok=false) {
   el.textContent = msg;
   el.style.opacity = 0.95;
   el.style.textShadow = ok ? '0 0 6px #ffb6c1' : 'none';
+  playTypeSound();
 }
 
 // ——— Progress (localStorage) ———
@@ -117,6 +118,18 @@ function updateProgressUI() {
   const text = document.getElementById('progressText');
   if (bar) bar.style.width = pct + '%';
   if (text) text.textContent = `Solved: ${count} / 5`;
+}
+function playTypeSound() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = 'square';
+  o.frequency.setValueAtTime(440, ctx.currentTime);
+  g.gain.setValueAtTime(0.05, ctx.currentTime);
+  o.connect(g);
+  g.connect(ctx.destination);
+  o.start();
+  o.stop(ctx.currentTime + 0.05);
 }
 
 // ——— Challenges ———
