@@ -1,71 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Hacker Toolkit</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Hacker Toolkit — Swastik</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>🔧 Hacker Toolkit</h1>
+  <div class="scanlines"></div>
+  <header class="header">
+    <h1 class="typewriter">> toolkit: <span class="glitch" data-text="decode_analyze_reveal">decode_analyze_reveal</span></h1>
+    <nav class="nav">
+      <a href="index.html">← Back to Terminal</a>
+    </nav>
+  </header>
 
-  <section>
-    <h2>Caesar Cipher Decoder</h2>
-    <input id="caesarText" placeholder="Encrypted text">
-    <input id="shift" type="number" value="5">
-    <button onclick="decodeCaesar()">Decode</button>
-    <p id="caesarResult"></p>
-  </section>
+  <main class="terminal grid">
+    <section class="card">
+      <h2>Caesar Cipher Decoder</h2>
+      <div class="controls">
+        <input id="caesarText" placeholder="Encrypted text" />
+        <input id="shift" type="number" value="5" />
+        <button onclick="decodeCaesar()">decode</button>
+      </div>
+      <p id="caesarResult" class="result"></p>
+    </section>
 
-  <section>
-    <h2>Base64 Decoder</h2>
-    <input id="base64Text" placeholder="Base64 text">
-    <button onclick="decodeBase64()">Decode</button>
-    <p id="base64Result"></p>
-  </section>
+    <section class="card">
+      <h2>Base64 Decoder</h2>
+      <div class="controls">
+        <input id="base64Text" placeholder="Base64 text" />
+        <button onclick="decodeBase64()">decode</button>
+      </div>
+      <p id="base64Result" class="result"></p>
+    </section>
 
-  <section>
-    <h2>Page Scanner</h2>
-    <button onclick="scanPage()">Scan for clues</button>
-    <p id="scanResult"></p>
-  </section>
+    <section class="card">
+      <h2>Reverse String</h2>
+      <div class="controls">
+        <input id="reverseText" placeholder="Enter text" />
+        <button onclick="reverseText()">reverse</button>
+      </div>
+      <p id="reverseResult" class="result"></p>
+    </section>
+
+    <section class="card">
+      <h2>Page Scanner</h2>
+      <p class="muted">Find hidden <code>data-clue</code> attributes on the current page.</p>
+      <div class="controls">
+        <button onclick="scanPage()">scan</button>
+      </div>
+      <p id="scanResult" class="result"></p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> Swastik Sharma · Toolkit</small>
+  </footer>
 
   <script>
+    // Toolkit functions (local only, no backend)
     function decodeCaesar() {
-      let text = document.getElementById("caesarText").value;
-      let shift = parseInt(document.getElementById("shift").value);
-      let output = '';
+      const text = document.getElementById("caesarText").value || "";
+      const shift = parseInt(document.getElementById("shift").value || "0", 10);
+      let out = "";
       for (let i = 0; i < text.length; i++) {
-        let c = text.charCodeAt(i);
-        if (c >= 65 && c <= 90) {
-          output += String.fromCharCode((c - 65 - shift + 26) % 26 + 65);
-        } else if (c >= 97 && c <= 122) {
-          output += String.fromCharCode((c - 97 - shift + 26) % 26 + 97);
-        } else {
-          output += text.charAt(i);
-        }
+        const c = text.charCodeAt(i);
+        if (c >= 65 && c <= 90) out += String.fromCharCode((c - 65 - shift + 26) % 26 + 65);
+        else if (c >= 97 && c <= 122) out += String.fromCharCode((c - 97 - shift + 26) % 26 + 97);
+        else out += text[i];
       }
-      document.getElementById("caesarResult").innerText = "Decoded: " + output;
+      document.getElementById("caesarResult").innerText = "Decoded: " + out;
     }
-
     function decodeBase64() {
       try {
-        let text = document.getElementById("base64Text").value;
-        let decoded = atob(text);
+        const t = document.getElementById("base64Text").value || "";
+        const decoded = atob(t);
         document.getElementById("base64Result").innerText = "Decoded: " + decoded;
-      } catch (e) {
+      } catch {
         document.getElementById("base64Result").innerText = "Invalid Base64";
       }
     }
-
-    function scanPage() {
-      let clues = document.querySelectorAll("[data-clue]");
-      if (clues.length > 0) {
-        document.getElementById("scanResult").innerText =
-          "Found clues: " + Array.from(clues).map(c => c.dataset.clue).join(", ");
-      } else {
-        document.getElementById("scanResult").innerText = "No clues found here.";
-      }
+    function reverseText() {
+      const t = document.getElementById("reverseText").value || "";
+      document.getElementById("reverseResult").innerText = "Reversed: " + t.split("").reverse().join("");
     }
+    function scanPage() {
+      // Scans *this* page; to scan index.html, open DevTools console there.
+      const clues = document.querySelectorAll("[data-clue]");
+      const out = clues.length
+        ? "Found clues: " + Array.from(clues).map(c => c.dataset.clue).join(", ")
+        : "No clues found here.";
+      document.getElementById("scanResult").innerText = out;
+    }
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
