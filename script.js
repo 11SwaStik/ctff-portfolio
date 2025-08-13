@@ -9,6 +9,51 @@ function caesarShift(str, amount) {
   }
   return out;
 }
+function fireConfetti() {
+  const confetti = document.createElement('canvas');
+  confetti.style.position = 'fixed';
+  confetti.style.top = '0';
+  confetti.style.left = '0';
+  confetti.style.width = '100%';
+  confetti.style.height = '100%';
+  confetti.style.pointerEvents = 'none';
+  confetti.style.zIndex = '9999';
+  document.body.appendChild(confetti);
+
+  const ctx = confetti.getContext('2d');
+  const pieces = Array.from({length: 50}).map(() => ({
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+    w: 5 + Math.random() * 5,
+    h: 8 + Math.random() * 8,
+    color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+    vx: (Math.random() - 0.5) * 8,
+    vy: (Math.random() - 0.5) * 8,
+    ay: 0.2
+  }));
+
+  function update() {
+    ctx.clearRect(0, 0, confetti.width, confetti.height);
+    pieces.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += p.ay;
+      ctx.fillStyle = p.color;
+      ctx.fillRect(p.x, p.y, p.w, p.h);
+    });
+  }
+
+  function animate() {
+    update();
+    requestAnimationFrame(animate);
+  }
+
+  confetti.width = window.innerWidth;
+  confetti.height = window.innerHeight;
+  animate();
+  setTimeout(() => confetti.remove(), 2000);
+}
+
 
 function unlockSection(id) {
   const el = document.getElementById(id);
