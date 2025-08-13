@@ -232,6 +232,13 @@ h1, h2, h3 {
   font-size: 0.9rem;
   opacity: 0.8;
 }
+/* Blinking hint for challenge help */
+.hint-blink {
+  animation: blinkHint 1s infinite;
+  color: #ffb6c1;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
 @keyframes blinkHint {
   0%, 50%, 100% { opacity: 0.8; }
   25%, 75% { opacity: 0.3; }
