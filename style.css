@@ -1,6 +1,6 @@
 :root{
   --pink:#ffb6c1; --pink-strong:#ff69b4; --pink-hot:#ff1493;
-  --cyan:#5df2ff; --violet:#c38bff; --lime:#a8ff60;
+  --cyan:#5df2ff; --violet:#c38bff; --lime:#a8ff60; --amber:#ffc857;
   --bg:#000;
 }
 *{box-sizing:border-box}
@@ -15,10 +15,14 @@ body{
 .bg-gradient{
   position:fixed; inset:-10vmax; z-index:-4;
   background: conic-gradient(from 0deg at 50% 50%,
-    rgba(255,182,193,.15), rgba(93,242,255,.12),
-    rgba(195,139,255,.12), rgba(168,255,96,.10), rgba(255,182,193,.15));
-  filter: blur(40px);
-  animation: spin 40s linear infinite;
+    rgba(255,182,193,.14),
+    rgba(93,242,255,.12),
+    rgba(195,139,255,.12),
+    rgba(168,255,96,.10),
+    rgba(255,200,87,.10),
+    rgba(255,182,193,.14));
+  filter: blur(42px);
+  animation: spin 44s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -32,13 +36,13 @@ body{
 @keyframes floatB{ 0%,100%{transform:translateX(0)} 50%{transform:translateX(-25px)} }
 @keyframes floatC{ 0%,100%{transform:translate(0,0)} 50%{transform:translate(25px,-15px)} }
 
-/* scanlines overlay */
+/* subtle scanlines */
 .scanlines::before{
   content:""; position:fixed; inset:0; z-index:-1;
   background: repeating-linear-gradient(
     rgba(255,255,255,.02) 0 2px, transparent 2px 4px
   );
-  animation: moveScan 6s linear infinite;
+  animation: moveScan 7s linear infinite;
 }
 @keyframes moveScan{to{background-position:0 120px}}
 
@@ -47,26 +51,34 @@ a{color:var(--pink)} a:hover{color:#ffcce0}
 .header{padding:24px 20px 8px; border-bottom:1px solid rgba(255,182,193,.2)}
 .nav{margin-top:8px; display:flex; gap:12px; align-items:center}
 .nav a,.nav button{border:1px solid var(--pink); background:transparent; color:var(--pink);
-  padding:6px 10px; text-decoration:none; cursor:pointer}
-.nav .ghost{opacity:.8}
-.nav a:hover,.nav button:hover{background:var(--pink); color:#000}
+  padding:6px 10px; text-decoration:none; cursor:pointer; transition:transform .15s ease}
+.nav a:hover,.nav button:hover{background:var(--pink); color:#000; transform:translateY(-1px)}
 
 .progress-wrap{height:8px; margin-top:16px; background:rgba(255,182,193,.08);
   border:1px solid rgba(255,182,193,.2)}
-.progress-bar{height:100%; width:0%; background:linear-gradient(90deg,var(--pink),var(--cyan),var(--violet),var(--lime));
+.progress-bar{height:100%; width:0%; background:linear-gradient(90deg,var(--pink),var(--cyan),var(--violet),var(--lime),var(--amber));
   box-shadow:0 0 10px var(--pink); transition:width .4s ease}
 .progress-text{font-size:12px; margin-top:6px; opacity:.85}
 
-.terminal{max-width:960px; margin:20px auto; padding:0 20px 40px}
+.terminal{max-width:980px; margin:20px auto; padding:0 20px 40px}
 
 .card{
+  position:relative;
   border:1px solid rgba(255,182,193,.25);
   background:rgba(0,0,0,.55);
   padding:16px; margin:14px 0;
   box-shadow: 0 0 18px rgba(255,182,193,.08);
   animation: fadeIn .5s ease;
   backdrop-filter: blur(4px);
+  transition: box-shadow .2s ease, transform .2s ease;
 }
+.card:hover{ box-shadow:0 0 24px rgba(93,242,255,.15); transform: translateY(-1px);}
+.card-corners::before,.card-corners::after{
+  content:""; position:absolute; width:18px; height:18px; border:2px solid var(--cyan);
+}
+.card-corners::before{ left:-2px; top:-2px; border-right:none; border-bottom:none; }
+.card-corners::after{ right:-2px; bottom:-2px; border-left:none; border-top:none; }
+
 .locked{display:none}
 .lead{opacity:.95; font-size:1.02rem}
 .cols{columns:2; column-gap:24px}
@@ -122,6 +134,10 @@ h1,h2,h3{
 .hint-blink{animation:blinkHint 1s infinite; color:var(--cyan); font-size:.9rem; opacity:.9}
 @keyframes blinkHint{0%,50%,100%{opacity:.9}25%,75%{opacity:.25}}
 
+.hint{color:var(--amber); margin-top:6px; opacity:.95}
+.reveal{margin-top:6px; border-color:var(--cyan); color:var(--cyan)}
+.reveal:hover{background:var(--cyan); color:#000}
+
 /* confetti (CSS only) */
 .confetti{
   position:fixed; inset:0; pointer-events:none; z-index:9999; overflow:hidden;
@@ -134,3 +150,4 @@ h1,h2,h3{
   0%{transform:translateY(-10vh) rotate(0deg)}
   100%{transform:translateY(100vh) rotate(720deg)}
 }
+
