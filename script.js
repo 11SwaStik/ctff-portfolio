@@ -1,303 +1,169 @@
-// ——— Utilities ———
-function caesarShift(str, amount) {
-  let out = '';
-  for (let i = 0; i < str.length; i++) {
-    const c = str.charCodeAt(i);
-    if (c >= 65 && c <= 90) out += String.fromCharCode((c - 65 - amount + 26) % 26 + 65);
-    else if (c >= 97 && c <= 122) out += String.fromCharCode((c - 97 - amount + 26) % 26 + 97);
-    else out += str[i];
-  }
-  return out;
+// ——— helpers ———
+function caesarShift(str, amount){
+  let out=''; for(let i=0;i<str.length;i++){
+    const c=str.charCodeAt(i);
+    if(c>=65&&c<=90) out+=String.fromCharCode((c-65-amount+26)%26+65);
+    else if(c>=97&&c<=122) out+=String.fromCharCode((c-97-amount+26)%26+97);
+    else out+=str[i];
+  } return out;
 }
-function fireConfetti() {
-  const confetti = document.createElement('canvas');
-  confetti.style.position = 'fixed';
-  confetti.style.top = '0';
-  confetti.style.left = '0';
-  confetti.style.width = '100%';
-  confetti.style.height = '100%';
-  confetti.style.pointerEvents = 'none';
-  confetti.style.zIndex = '9999';
-  document.body.appendChild(confetti);
-
-  const ctx = confetti.getContext('2d');
-  const pieces = Array.from({length: 50}).map(() => ({
-    x: window.innerWidth / 2,
-    y: window.innerHeight / 2,
-    w: 5 + Math.random() * 5,
-    h: 8 + Math.random() * 8,
-    color: `hsl(${Math.random() * 360}, 100%, 70%)`,
-    vx: (Math.random() - 0.5) * 8,
-    vy: (Math.random() - 0.5) * 8,
-    ay: 0.2
-  }));
-
-  function update() {
-    ctx.clearRect(0, 0, confetti.width, confetti.height);
-    pieces.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += p.ay;
-      ctx.fillStyle = p.color;
-      ctx.fillRect(p.x, p.y, p.w, p.h);
-    });
-  }
-
-  function animate() {
-    update();
-    requestAnimationFrame(animate);
-  }
-
-  confetti.width = window.innerWidth;
-  confetti.height = window.innerHeight;
-  animate();
-  setTimeout(() => confetti.remove(), 2000);
-}
-
-
-
-
-function unlockSection(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.style.display = 'block';
-  el.classList.add('unlocked');
-  fireConfetti(); // 🎉 burst when unlocked
-  saveProgress();
-  updateProgressUI();
-}
-
-
-function setResult(id, msg, ok=false) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = msg;
-  el.style.opacity = 0.95;
+function setResult(id,msg,ok=false){
+  const el=document.getElementById(id); if(!el) return;
+  el.textContent=msg; el.style.opacity=.95;
   el.style.textShadow = ok ? '0 0 6px #ffb6c1' : 'none';
-  playTypeSound();
+  typeSfx();
+}
+function unlockSection(id){
+  const el=document.getElementById(id); if(!el) return;
+  el.style.display='block'; el.classList.add('unlocked');
+  confettiBurst(); saveProgress(); updateProgressUI();
+}
+function confettiBurst(){
+  // CSS-only confetti (no canvas)
+  const wrap=document.createElement('div'); wrap.className='confetti';
+  const colors=['#ffb6c1','#5df2ff','#c38bff','#a8ff60','#fff176','#ff8a65'];
+  const count=80;
+  for(let i=0;i<count;i++){
+    const piece=document.createElement('i');
+    piece.style.left=Math.random()*100+'vw';
+    piece.style.background=colors[i%colors.length];
+    piece.style.transform=`translateY(-10vh) rotate(${Math.random()*360}deg)`;
+    piece.style.animationDelay=(Math.random()*0.3)+'s';
+    piece.style.width=(6+Math.random()*6)+'px';
+    piece.style.height=(10+Math.random()*10)+'px';
+    wrap.appendChild(piece);
+  }
+  document.body.appendChild(wrap);
+  setTimeout(()=>wrap.remove(), 1900);
+}
+function typeSfx(){
+  try{
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='square'; o.frequency.setValueAtTime(440,ctx.currentTime);
+    g.gain.setValueAtTime(0.04,ctx.currentTime);
+    o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.05);
+  }catch(e){}
 }
 
-// ——— Progress (localStorage) ———
-const CHAIN = ['about','skills','projects','certs','achievements','final'];
+// ——— progress ———
 const solved = JSON.parse(localStorage.getItem('ctfProgress') || '{}');
-
-function markSolved(key, sectionToUnlockIds=[]) {
-  solved[key] = true;
-  localStorage.setItem('ctfProgress', JSON.stringify(solved));
-  sectionToUnlockIds.forEach(unlockSection);
-  // If all core sections (about, skills, projects, certs, achievements) are visible → unlock final.
-  const allOpen = ['about','skills','projects','certs','achievements'].every(id => {
-    const el = document.getElementById(id);
-    return el && getComputedStyle(el).display !== 'none';
+function markSolved(key, ids=[]){
+  solved[key]=true; localStorage.setItem('ctfProgress', JSON.stringify(solved));
+  ids.forEach(unlockSection);
+  const allOpen=['about','skills','projects','certs','achievements'].every(id=>{
+    const el=document.getElementById(id); return el && getComputedStyle(el).display!=='none';
   });
-  if (allOpen) unlockSection('final');
+  if(allOpen) unlockSection('final');
 }
-
-function restoreProgress() {
-  if (solved.c1) unlockSection('about'), unlockSection('challenge2');
-  if (solved.c2) unlockSection('skills'), unlockSection('challenge3');
-  if (solved.c3) unlockSection('projects'), unlockSection('challenge4');
-  if (solved.c4) unlockSection('certs'), unlockSection('challenge5');
-  if (solved.c5) unlockSection('achievements');
+function restoreProgress(){
+  if(solved.c1) unlockSection('about'), unlockSection('challenge2');
+  if(solved.c2) unlockSection('skills'), unlockSection('challenge3');
+  if(solved.c3) unlockSection('projects'), unlockSection('challenge4');
+  if(solved.c4) unlockSection('certs'), unlockSection('challenge5');
+  if(solved.c5) unlockSection('achievements');
   updateProgressUI();
 }
-
-function saveProgress() {
-  // Nothing extra yet; just a hook if you expand.
+function saveProgress(){}
+function updateProgressUI(){
+  let count=0; if(solved.c1)count++; if(solved.c2)count++; if(solved.c3)count++; if(solved.c4)count++; if(solved.c5)count++;
+  const pct=Math.round(count/5*100);
+  const bar=document.getElementById('progressBar'), text=document.getElementById('progressText');
+  if(bar) bar.style.width=pct+'%'; if(text) text.textContent=`Solved: ${count} / 5`;
 }
 
-function updateProgressUI() {
-  let count = 0;
-  if (solved.c1) count++;
-  if (solved.c2) count++;
-  if (solved.c3) count++;
-  if (solved.c4) count++;
-  if (solved.c5) count++;
-  const pct = Math.round((count / 5) * 100);
-  const bar = document.getElementById('progressBar');
-  const text = document.getElementById('progressText');
-  if (bar) bar.style.width = pct + '%';
-  if (text) text.textContent = `Solved: ${count} / 5`;
-}
-function playTypeSound() {
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const o = ctx.createOscillator();
-  const g = ctx.createGain();
-  o.type = 'square';
-  o.frequency.setValueAtTime(440, ctx.currentTime);
-  g.gain.setValueAtTime(0.05, ctx.currentTime);
-  o.connect(g);
-  g.connect(ctx.destination);
-  o.start();
-  o.stop(ctx.currentTime + 0.05);
-}
-
-// ——— Challenges ———
-function checkChallenge1() {
-  const input = (document.getElementById('input1').value || '').trim();
-  const correct = caesarShift('Mjqqt', 5); // "Hello"
-  if (input.toLowerCase() === correct.toLowerCase()) {
-    setResult('result1', '✅ Correct! About + next challenge unlocked.', true);
-    markSolved('c1', ['about', 'challenge2']);
-  } else {
-    setResult('result1', '❌ Incorrect. Try your toolkit.');
-  }
-}
-
-function checkChallenge2() {
-  const input = (document.getElementById('input2').value || '').trim();
-  const correct = atob('c2tpbGxzX2ZsYWc='); // "skills_flag" (hidden in HTML comment)
-  if (input === correct) {
-    setResult('result2', '✅ Nice! Skills + next challenge unlocked.', true);
-    markSolved('c2', ['skills','challenge3']);
-  } else {
-    setResult('result2', '❌ Nope. Inspect source → Base64 → decode.');
-  }
-}
-
-function checkChallenge3() {
-  const input = (document.getElementById('input3').value || '').trim().toLowerCase();
-  // Accept common variants
-  const ok = ['agni shield','agni-shield','agnishield'].includes(input);
-  if (ok) {
-    setResult('result3', '✅ Good catch. Projects + next challenge unlocked.', true);
-    markSolved('c3', ['projects','challenge4']);
-  } else {
-    setResult('result3', '❌ Wrong service. Re-check console logs.');
-  }
-}
-
-function checkChallenge4() {
-  const input = (document.getElementById('input4').value || '').trim();
-  // Expect the original CEH license exactly as on resume:
-  const correct = 'ECC3417659820';
-  if (input === correct) {
-    setResult('result4', '✅ Verified. Certificates + next challenge unlocked.', true);
-    markSolved('c4', ['certs','challenge5']);
-  } else {
-    setResult('result4', '❌ Not the original. Decode fully (reverse → base64 → original).');
-  }
-}
-
-function checkChallenge5() {
-  const raw = (document.getElementById('input5').value || '').trim().toLowerCase();
-  const ok = raw === '1st' || raw === '1' || raw === 'first';
-  if (ok) {
-    setResult('result5', '🏆 Correct! Achievements unlocked. Final access available.', true);
-    markSolved('c5', ['achievements']);
-  } else {
-    setResult('result5', '❌ Think leaderboard positions. Out of 100…');
-  }
-}
-
-function emitNetworkNoise() {
-  // Fake network scan output for Challenge 3
-  const rows = [
-    '[scan] 10.0.0.12:443 — tls service (ok)',
-    '[scan] 10.0.0.15:22 — ssh (key only)',
-    '[scan] api.internal.local — healthy',
-    '[scan] agni-shield.local — waf/admin reachable',
-    '[scan] 10.0.0.22:8080 — http (redirect)',
-    '[scan] cache.node — miss rate 2.1%',
+// ——— cinematic console + hint ———
+function emitNetworkNoise(){
+  const lines=[
+    '[SYS-ALERT] anomaly detected on port 443',
+    '[TRACE] sniffing packet → decryption in progress...',
+    '[HANDSHAKE] key-exchange complete',
+    '[DECRYPT] >>> FLAG{firewall_overlord}', // The flag they need
+    '[NOTE] This is your way in. Don’t screw it up.'
   ];
-
-  console.log('%c— network scan —', 'color:#ffb6c1; font-weight:bold;');
-  rows.forEach(r => console.log('%c' + r, 'color:#ffb6c1;'));
-  console.log('%cHint: Which service name matches a project above?', 'color:#ffb6c1; opacity:0.8;');
-
-  // ASCII art easter egg in console
+  console.log('%c— intranet link —', 'color:#ffb6c1; font-weight:bold;');
+  lines.forEach(l => console.log('%c'+l, 'color:#5df2ff'));
   console.log("%c\n" +
 "   ____       _        _   _ _   _ _ _ _ \n" +
 "  / ___|  ___| |_ __ _| |_(_) |_(_) | (_)\n" +
 "  \\___ \\ / _ \\ __/ _` | __| | __| | | | |\n" +
 "   ___) |  __/ || (_| | |_| | |_| | | | |\n" +
 "  |____/ \\___|\\__\\__,_|\\__|_|\\__|_|_|_|_|\n" +
-"   Find all flags to unlock the résumé.  \n", "color:#ffb6c1");
+"  Find all flags to unlock the résumé.    \n", "color:#c38bff");
 
-  // Show blinking F12 hint after 4 seconds if Challenge 3 not solved
-  if (!solved.c3) {
-    const hintEl = document.getElementById('c3-hint');
-    if (hintEl) {
-      setTimeout(() => { hintEl.style.display = 'inline-block'; }, 4000);
-    }
+  if(!solved.c3){
+    const hintEl=document.getElementById('c3-hint');
+    if(hintEl){ setTimeout(()=>{ hintEl.style.display='inline-block'; }, 4000); }
   }
 }
 
-
-// ——— Page init ———
-(function init() {
-  document.getElementById('year') && (document.getElementById('year').textContent = new Date().getFullYear());
-  // Restore local progress
-  restoreProgress();
-  // Emit console logs for Challenge 3
-  emitNetworkNoise();
-  // Reset
-  const resetBtn = document.getElementById('resetProgress');
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      localStorage.removeItem('ctfProgress');
-      location.reload();
-      // Show blinking hint for Challenge 3 if not solved yet
-if (!solved.c3) {
-  const hintEl = document.getElementById('c3-hint');
-  if (hintEl) {
-    setTimeout(() => { hintEl.style.display = 'inline-block'; }, 4000); // show after 4s
+// ——— challenges (creative flags) ———
+// C1: ROT(5) -> "Hello" -> forge "hello_world_order" -> FLAG{hello_world_order}
+function checkChallenge1(){
+  const val=(document.getElementById('input1').value||'').trim();
+  const decoded=caesarShift('Mjqqt',5); // "Hello"
+  const expected='FLAG{hello_world_order}';
+  if(val.toLowerCase()===expected.toLowerCase()){
+    setResult('result1','✅ Access node breached. “Welcome to the underground.”',true);
+    markSolved('c1',['about','challenge2']);
+  }else{
+    setResult('result1','❌ Tip: decode → "Hello". Then forge phrase "hello_world_order" and wrap: FLAG{...}');
   }
 }
 
-    });
+// C2: Base64 in HTML comment -> FLAG{pink_protocol_1337}
+function checkChallenge2(){
+  const val=(document.getElementById('input2').value||'').trim();
+  const expected='FLAG{pink_protocol_1337}';
+  if(val===expected){
+    setResult('result2','✅ You’ve unlocked the Pink Protocol. “Things just got real.”',true);
+    markSolved('c2',['skills','challenge3']);
+  }else{
+    setResult('result2','❌ Decode the Base64 from page source. The answer is a FLAG{...}.');
   }
+}
+
+// C3: Console leak -> FLAG{firewall_overlord}
+function checkChallenge3(){
+  const val=(document.getElementById('input3').value||'').trim();
+  const expected='FLAG{firewall_overlord}';
+  if(val===expected){
+    setResult('result3','✅ Firewall neutralized. “We’re in.”',true);
+    markSolved('c3',['projects','challenge4']);
+  }else{
+    setResult('result3','❌ Check the Console for a line that begins with [DECRYPT].');
+  }
+}
+
+// C4: comment says BASE64 → REVERSE → result should be FLAG{certified_elite_h4x0r}
+function checkChallenge4(){
+  const val=(document.getElementById('input4').value||'').trim();
+  const expected='FLAG{certified_elite_h4x0r}';
+  if(val===expected){
+    setResult('result4','✅ Credentials verified. “You don’t just get in — you belong here.”',true);
+    markSolved('c4',['certs','challenge5']);
+  }else{
+    setResult('result4','❌ Hint: take the comment payload → Base64 decode → then reverse the string.');
+  }
+}
+
+// C5: 1st place codename -> FLAG{top_of_the_foodchain}
+function checkChallenge5(){
+  const val=(document.getElementById('input5').value||'').trim();
+  const expected='FLAG{top_of_the_foodchain}';
+  if(val===expected){
+    setResult('result5','🏆 Apex unlocked. “You’re the predator now.”',true);
+    markSolved('c5',['achievements']);
+  }else{
+    setResult('result5','❌ Forge the codename for finishing #1: FLAG{top_of_the_foodchain}.');
+  }
+}
+
+// ——— init ———
+(function init(){
+  const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+  restoreProgress(); emitNetworkNoise();
+  const reset=document.getElementById('resetProgress');
+  if(reset){ reset.addEventListener('click',()=>{ localStorage.removeItem('ctfProgress'); location.reload(); }); }
 })();
-// ——— Starfield Background ———
-(function starfield() {
-  const canvas = document.getElementById('bgCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let stars = [];
-  let w, h;
 
-  function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-    stars = [];
-    for (let i = 0; i < 100; i++) {
-      stars.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        z: Math.random() * w,
-      });
-    }
-  }
-
-  function draw() {
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = '#ffb6c1';
-    stars.forEach(s => {
-      let k = 128.0 / s.z;
-      let px = s.x * k + w / 2;
-      let py = s.y * k + h / 2;
-      if (px >= 0 && px <= w && py >= 0 && py <= h) {
-        let size = (1 - s.z / w) * 3;
-        ctx.beginPath();
-        ctx.arc(px, py, size, 0, 2 * Math.PI);
-        ctx.fill();
-      }
-      s.z -= 2;
-      if (s.z <= 0) {
-        s.x = Math.random() * w - w / 2;
-        s.y = Math.random() * h - h / 2;
-        s.z = w;
-      }
-    });
-  }
-
-  function loop() {
-    draw();
-    requestAnimationFrame(loop);
-  }
-
-  resize();
-  loop();
-  window.addEventListener('resize', resize);
-})();
