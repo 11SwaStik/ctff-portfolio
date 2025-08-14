@@ -7,7 +7,12 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="bg-gradient"></div>
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+  <div class="bg-orb orb-c"></div>
   <div class="scanlines"></div>
+
   <header class="header">
     <h1 class="typewriter">> toolkit: <span class="glitch" data-text="decode_analyze_reveal">decode_analyze_reveal</span></h1>
     <nav class="nav">
@@ -17,7 +22,7 @@
 
   <main class="terminal grid">
     <section class="card">
-      <h2>Caesar Cipher Decoder</h2>
+      <h2>Caesar / ROT‑N</h2>
       <div class="controls">
         <input id="caesarText" placeholder="Encrypted text" />
         <input id="shift" type="number" value="5" />
@@ -46,7 +51,7 @@
 
     <section class="card">
       <h2>Page Scanner</h2>
-      <p class="muted">Find hidden <code>data-clue</code> attributes on the current page.</p>
+      <p class="muted">Find hidden <code>data-clue</code> attributes on the current page (try it on the main page via DevTools console).</p>
       <div class="controls">
         <button onclick="scanPage()">scan</button>
       </div>
@@ -59,7 +64,6 @@
   </footer>
 
   <script>
-    // Toolkit functions (local only, no backend)
     function decodeCaesar() {
       const text = document.getElementById("caesarText").value || "";
       const shift = parseInt(document.getElementById("shift").value || "0", 10);
@@ -75,8 +79,7 @@
     function decodeBase64() {
       try {
         const t = document.getElementById("base64Text").value || "";
-        const decoded = atob(t);
-        document.getElementById("base64Result").innerText = "Decoded: " + decoded;
+        document.getElementById("base64Result").innerText = "Decoded: " + atob(t);
       } catch {
         document.getElementById("base64Result").innerText = "Invalid Base64";
       }
@@ -86,7 +89,6 @@
       document.getElementById("reverseResult").innerText = "Reversed: " + t.split("").reverse().join("");
     }
     function scanPage() {
-      // Scans *this* page; to scan index.html, open DevTools console there.
       const clues = document.querySelectorAll("[data-clue]");
       const out = clues.length
         ? "Found clues: " + Array.from(clues).map(c => c.dataset.clue).join(", ")
@@ -97,3 +99,4 @@
   </script>
 </body>
 </html>
+
