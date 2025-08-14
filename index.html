@@ -7,17 +7,22 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<canvas id="bgCanvas"></canvas>
+  <!-- === Hidden Comms / Clues ========================================= -->
+  <!-- Challenge 2 (Base64 of FLAG{pink_protocol_1337}) -->
+  <!-- RkxBR3twaW5rX3Byb3RvY29sXzEzMzd9 -->
 
-  <!-- Challenge 2 hidden clue (Base64 of "skills_flag") -->
-  <!-- c2tpbGxzX2ZsYWc= -->
+  <!-- Challenge 4 (Base64 of REVERSED "FLAG{certified_elite_h4x0r}") -->
+  <!-- fXIweDRoX2V0aWxlX2RlaWZpdHJlY3tHQUxG -->
 
-  <!-- Challenge 4 hidden clue (CEH license reversed then base64)
-       Original: ECC3417659820
-       Reversed: 0289567143CCE
-       Base64:   MDI4OTU2NzE0M0NDRQ==  -->
-  <!-- cert: MDI4OTU2NzE0M0NDRQ== -->
+  <!-- OPTIONAL: extra easter egg for toolkit Page Scanner -->
+  <span data-clue="backdoor=FLAG{pink_protocol_1337}" style="display:none;"></span>
+  <!-- =================================================================== -->
 
+  <!-- cyber background layers -->
+  <div class="bg-gradient"></div>
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+  <div class="bg-orb orb-c"></div>
   <div class="scanlines"></div>
 
   <header class="header">
@@ -33,14 +38,13 @@
   </header>
 
   <main class="terminal">
-
     <!-- CHALLENGE 1 -->
     <section id="challenge1" class="card">
-      <h2>Challenge 1 · Caesar Cipher</h2>
-      <p>Intercepted string: <code>Mjqqt</code> <small>(ROT shift = 5)</small></p>
-      <p class="muted">Tip: Try the <a href="tools.html" target="_blank">Hacker Toolkit</a> → Caesar Decoder.</p>
+      <h2>Challenge 1 · Caesar Breach</h2>
+      <p class="muted">[INTERCEPTED] payload: <code>Mjqqt</code> — key: <em>ROT(5)</em></p>
+      <p class="muted">Format all answers like <code>FLAG{...}</code>. Example: decode → forge phrase → wrap.</p>
       <div class="controls">
-        <input id="input1" placeholder="enter password" autocomplete="off" />
+        <input id="input1" placeholder="enter FLAG{...}" autocomplete="off" />
         <button onclick="checkChallenge1()">submit</button>
       </div>
       <p id="result1" class="result"></p>
@@ -48,26 +52,26 @@
 
     <!-- ABOUT -->
     <section id="about" class="card locked">
-      <h2>About Me</h2>
-      <p class="lead">I’m <strong>Swastik Sharma</strong> — B.Tech (CSE) at Bennett University (Sept. 2022 – May 2026), cybersecurity + CTF enthusiast, and CEH (v12) certified.</p>
-      <ul>
-        <li>Focus areas: Ethical Hacking, Cyber Defense, Penetration Testing, SIEM.</li>
-        <li>Languages: Python, C++, Shell Scripting, JavaScript.</li>
-        <li>Tools: Burp Suite, Jira, Canva, and more.</li>
-      </ul>
-      <p>
-        <a href="https://www.linkedin.com/in/swastik-sharma-73184a252/" target="_blank">LinkedIn</a> ·
-        <a href="https://github.com/11SwaStik" target="_blank">GitHub</a>
+      <h2 class="neon-pulse">About Me</h2>
+      <p class="lead">
+        I’m <strong>Swastik Sharma</strong> — B.Tech (CSE) @ Bennett University (2022–2026), CEH (v12), cybersecurity & CTF enjoyer.
       </p>
+      <ul>
+        <li>Focus: Ethical Hacking, Pentesting, Cyber Defense, SIEM.</li>
+        <li>Languages: Python, C++, Shell, JavaScript.</li>
+        <li>Tools: Burp Suite, Jira, Canva, more.</li>
+      </ul>
+      <p><a href="https://www.linkedin.com/in/swastik-sharma-73184a252/" target="_blank">LinkedIn</a> ·
+         <a href="https://github.com/11SwaStik" target="_blank">GitHub</a></p>
     </section>
 
     <!-- CHALLENGE 2 -->
     <section id="challenge2" class="card locked">
-      <h2>Challenge 2 · Hidden in Source</h2>
-      <p>Something’s buried in the page source… decode it to proceed.</p>
-      <p class="muted">Hint appears in HTML comments. Use <em>Hacker Toolkit → Base64 Decoder</em>.</p>
+      <h2>Challenge 2 · Pink Protocol</h2>
+      <p>“View Source” whispers secrets. Decode the Base64 transmission.</p>
+      <p class="muted">Pro tip: <em>CTRL/CMD+U</em> or right‑click → View Page Source. Then use the <a href="tools.html" target="_blank">Toolkit</a>.</p>
       <div class="controls">
-        <input id="input2" placeholder="decoded flag here" autocomplete="off" />
+        <input id="input2" placeholder="enter FLAG{...}" autocomplete="off" />
         <button onclick="checkChallenge2()">submit</button>
       </div>
       <p id="result2" class="result"></p>
@@ -75,50 +79,46 @@
 
     <!-- SKILLS -->
     <section id="skills" class="card locked">
-      <h2>Skills</h2>
+      <h2 class="neon-pulse">Skills</h2>
       <ul class="cols">
-        <li><strong>Languages:</strong> Python, C++, Shell, JavaScript</li>
-        <li><strong>Security:</strong> Ethical Hacking, Pentesting, SIEM, Cyber Defense</li>
+        <li><strong>Languages:</strong> Python, C++, Shell, JS</li>
+        <li><strong>Security:</strong> Pentest, SIEM, Defense</li>
         <li><strong>Tools:</strong> Burp Suite, Jira, Canva</li>
-        <li><strong>Core CS:</strong> DSA, Networking</li>
+        <li><strong>CS:</strong> DSA, Networking</li>
       </ul>
     </section>
 
-   <!-- CHALLENGE 3 -->
-<section id="challenge3" class="card locked">
-  <h2>Challenge 3 · Network Noise</h2>
-  <p>Our “scanner” dumped some logs to the console. Spot the relevant asset and enter its name.</p>
-  <p class="muted">Open DevTools (<code>F12</code>) → Console. Look for a service that matches a project you might expect.</p>
-  <span id="c3-hint" class="hint-blink" style="display:none;">💡 Hint: Press F12 to open Developer Tools.</span>
-  <div class="controls">
-    <input id="input3" placeholder="project/service name" autocomplete="off" />
-    <button onclick="checkChallenge3()">submit</button>
-  </div>
-  <p id="result3" class="result"></p>
-</section>
-
+    <!-- CHALLENGE 3 -->
+    <section id="challenge3" class="card locked">
+      <h2>Challenge 3 · Network Noise</h2>
+      <p>DevTools Console received a leaked decryption. Retrieve the operative codename.</p>
+      <p class="muted">Open DevTools (<code>F12</code>) → Console. Look for a <em>DECRYPT</em> line.</p>
+      <span id="c3-hint" class="hint-blink" style="display:none;">💡 Hint: Press F12 to open Developer Tools.</span>
+      <div class="controls">
+        <input id="input3" placeholder="enter FLAG{...}" autocomplete="off" />
+        <button onclick="checkChallenge3()">submit</button>
+      </div>
+      <p id="result3" class="result"></p>
+    </section>
 
     <!-- PROJECTS -->
     <section id="projects" class="card locked">
-      <h2>Projects</h2>
+      <h2 class="neon-pulse">Projects</h2>
       <article class="proj">
-        <h3>Agni Shield — Context-Aware Firewall + L7 WAF</h3>
+        <h3>Agni Shield — Context‑Aware Firewall + L7 WAF</h3>
         <ul>
-          <li>Admin dashboard for domain/IP allow/deny and app-context policies.</li>
-          <li>Browser extension to block unwanted sites and IPv4s (works across devices).</li>
-          <li>Won <strong>1st place</strong> in university project exhibition (100+ teams).</li>
+          <li>Admin dashboard for domain/IP policy control and app‑context rules.</li>
+          <li>Browser extension blocks unwanted sites & IPv4s.</li>
+          <li><strong>1st place</strong> in university exhibition (100+ teams).</li>
         </ul>
       </article>
-      <p class="muted">Open DevTools (<code>F12</code>) → Console. Look for a service that matches a project you might expect.</p>
-      <span id="c3-hint" class="hint-blink" style="display:none;">💡 Hint: Press F12 to open Developer Tools.</span>
-
 
       <article class="proj">
         <h3>EDUTECH</h3>
         <ul>
-          <li>Educational site saving 70–80% of search time for videos.</li>
-          <li>Built a functional quiz boosting user knowledge by ~40%.</li>
-          <li>Security-tested to prevent ~80% of SQLi/XSS/DoS.</li>
+          <li>Saved 70–80% search time for learning videos.</li>
+          <li>Quiz improved user retention by ~40%.</li>
+          <li>Hardened vs SQLi/XSS/DoS (~80% risk mitigated).</li>
           <li><a href="https://edutech-seven.vercel.app" target="_blank">edutech-seven.vercel.app</a></li>
         </ul>
       </article>
@@ -126,16 +126,14 @@
       <article class="proj">
         <h3>Hash Cracker</h3>
         <ul>
-          <li>Cracks common hash algorithms in under 5 minutes.</li>
-          <li>Supports MD5, SHA-1/256/384/512 with ~98% accuracy.</li>
+          <li>MD5, SHA‑1/256/384/512; high accuracy, fast.</li>
         </ul>
       </article>
 
       <article class="proj">
         <h3>Network Scanner</h3>
         <ul>
-          <li>ARP + Nmap device discovery and port mapping.</li>
-          <li>Benchmarked network performance ~20% faster via speedtest-cli.</li>
+          <li>ARP + Nmap discovery; port mapping; speed benchmarking.</li>
         </ul>
       </article>
     </section>
@@ -143,10 +141,9 @@
     <!-- CHALLENGE 4 -->
     <section id="challenge4" class="card locked">
       <h2>Challenge 4 · Analyst Credentials</h2>
-      <p>There’s a certificate ID encoded in the source. Decode it fully and submit the original license string.</p>
-      <p class="muted">Hint: Reverse → Base64 (see comments). <a href="tools.html" target="_blank">Toolkit</a> has both.</p>
+      <p>A scrambled codename for my credentials hides in source. <em>BASE64 → REVERSE</em> the payload.</p>
       <div class="controls">
-        <input id="input4" placeholder="CEH license (exact)" autocomplete="off" />
+        <input id="input4" placeholder="enter FLAG{...}" autocomplete="off" />
         <button onclick="checkChallenge4()">submit</button>
       </div>
       <p id="result4" class="result"></p>
@@ -154,19 +151,19 @@
 
     <!-- CERTIFICATES -->
     <section id="certs" class="card locked">
-      <h2>Certificates</h2>
+      <h2 class="neon-pulse">Certificates</h2>
       <ul>
         <li><strong>CEH v12</strong> — License <code>ECC3417659820</code></li>
-        <li>MOOCs in Networking & Cybersecurity (Google, Microsoft)</li>
+        <li>Networking & Cybersecurity MOOCs (Google, Microsoft)</li>
       </ul>
     </section>
 
     <!-- CHALLENGE 5 -->
     <section id="challenge5" class="card locked">
       <h2>Challenge 5 · Crown of a Hundred</h2>
-      <p>“Out of a hundred teams, mine took the crown.” What place did I secure?</p>
+      <p>“Out of a hundred teams, mine took the crown.” Forge the correct codename.</p>
       <div class="controls">
-        <input id="input5" placeholder="answer" autocomplete="off" />
+        <input id="input5" placeholder="enter FLAG{...}" autocomplete="off" />
         <button onclick="checkChallenge5()">submit</button>
       </div>
       <p id="result5" class="result"></p>
@@ -174,17 +171,17 @@
 
     <!-- ACHIEVEMENTS -->
     <section id="achievements" class="card locked">
-      <h2>Achievements</h2>
+      <h2 class="neon-pulse">Achievements</h2>
       <ul>
-        <li><strong>Agni Shield — 1st place</strong> among 100+ teams at university exhibition.</li>
-        <li>Content Head @ Ciphers Club → helped 1,000+ students learn cybersecurity.</li>
+        <li><strong>Agni Shield — 1st place</strong> among 100+ teams.</li>
+        <li>Content Head @ Ciphers Club — helped 1,000+ students learn cybersecurity.</li>
       </ul>
     </section>
 
-    <!-- FINAL / CONTACT / RESUME -->
+    <!-- FINAL -->
     <section id="final" class="card locked">
       <h2>Final Access · Contact & Résumé</h2>
-      <p>You’ve unlocked all main terminals. Connect with me:</p>
+      <p>“You didn’t just break in — you rewrote the rules.”</p>
       <p>
         <a href="mailto:11swastiksharma@gmail.com">11swastiksharma@gmail.com</a> ·
         <a href="https://www.linkedin.com/in/swastik-sharma-73184a252/" target="_blank">LinkedIn</a> ·
@@ -195,9 +192,6 @@
         <a class="resume-btn" href="Swastik_Res1.pdf" download>Download Résumé (PDF)</a>
       </div>
     </section>
-
-    <!-- Invisible scanner clue for Toolkit Page Scanner (optional) -->
-    <span data-clue="contact_token=connect"></span>
   </main>
 
   <footer class="footer">
