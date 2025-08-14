@@ -1,4 +1,4 @@
-// ——— helpers ———
+// ===== Helpers =====
 function caesarShift(str, amount){
   let out=''; for(let i=0;i<str.length;i++){
     const c=str.charCodeAt(i);
@@ -19,9 +19,8 @@ function unlockSection(id){
   confettiBurst(); saveProgress(); updateProgressUI();
 }
 function confettiBurst(){
-  // CSS-only confetti (no canvas)
   const wrap=document.createElement('div'); wrap.className='confetti';
-  const colors=['#ffb6c1','#5df2ff','#c38bff','#a8ff60','#fff176','#ff8a65'];
+  const colors=['#ffb6c1','#5df2ff','#c38bff','#a8ff60','#ffc857','#ff8a65'];
   const count=80;
   for(let i=0;i<count;i++){
     const piece=document.createElement('i');
@@ -46,11 +45,12 @@ function typeSfx(){
   }catch(e){}
 }
 
-// ——— progress ———
+// ===== Progress =====
 const solved = JSON.parse(localStorage.getItem('ctfProgress') || '{}');
-function markSolved(key, ids=[]){
+function markSolved(key, ids=[], punchline=''){
   solved[key]=true; localStorage.setItem('ctfProgress', JSON.stringify(solved));
   ids.forEach(unlockSection);
+  if(punchline) console.log('%c[ACCESS]', 'color:#5df2ff', punchline);
   const allOpen=['about','skills','projects','certs','achievements'].every(id=>{
     const el=document.getElementById(id); return el && getComputedStyle(el).display!=='none';
   });
@@ -66,20 +66,99 @@ function restoreProgress(){
 }
 function saveProgress(){}
 function updateProgressUI(){
-  let count=0; if(solved.c1)count++; if(solved.c2)count++; if(solved.c3)count++; if(solved.c4)count++; if(solved.c5)count++;
+  let count=0; ['c1','c2','c3','c4','c5'].forEach(k=>{ if(solved[k]) count++; });
   const pct=Math.round(count/5*100);
   const bar=document.getElementById('progressBar'), text=document.getElementById('progressText');
   if(bar) bar.style.width=pct+'%'; if(text) text.textContent=`Solved: ${count} / 5`;
 }
 
-// ——— cinematic console + hint ———
+// ===== Progressive Hints / Reveal =====
+const challengeMeta = {
+  1: {
+    expected: 'FLAG{neon}',
+    hints: [
+      'Cipher, not code: think ROT(5).',
+      'Decode <sjts> with ROT(5). Wrap it: FLAG{...}.'
+    ],
+    punch: 'First light acquired. The city’s glow is no longer just for watching — it’s yours to direct.'
+  },
+  2: {
+    expected: 'FLAG{cyber}',
+    hints: [
+      'View the page source; there’s a Base64 string waiting.',
+      'Decode the string you find into the final FLAG.'
+    ],
+    punch: 'You cut through the static. The network feels smaller already.'
+  },
+  3: {
+    expected: 'FLAG{overlord}',
+    hints: [
+      'Open DevTools → Console. Watch for [DECRYPT].',
+      'The answer is printed cleanly — copy it as is.'
+    ],
+    punch: 'The fortress walls crumble. Their “overlord” is just another variable you control.'
+  },
+  4: {
+    expected: 'FLAG{elite}',
+    hints: [
+      'Decode the source comment with Base64.',
+      'Now reverse the decoded text to read the true FLAG.'
+    ],
+    punch: 'Credentials verified. You’re operating above the grid now — among the unseen.'
+  },
+  5: {
+    expected: 'FLAG{apex}',
+    hints: [
+      '“Crown among a hundred” — think status.',
+      'Four letters. The point where everything converges.'
+    ],
+    punch: 'Every system bends. Every lock yields. You are the apex — and the hunt is over.'
+  }
+};
+
+const attempts = {1:0,2:0,3:0,4:0,5:0};
+const timers = {}; // { n: {start:number, hint1:timeoutId, reveal:timeoutId } }
+
+function onFirstAttempt(n){
+  if(timers[n]) return;
+  timers[n] = {};
+  timers[n].start = Date.now();
+  // time-based hint after 30s (if not solved)
+  timers[n].hint1 = setTimeout(()=> showHint(n, 0), 30000);
+  // time-based reveal after 60s (if not solved)
+  timers[n].reveal = setTimeout(()=> showReveal(n), 60000);
+}
+
+function showHint(n, idx){
+  if(solved['c'+n]) return;
+  const el = document.getElementById('hint'+n);
+  if(!el) return;
+  el.textContent = '💡 ' + challengeMeta[n].hints[idx];
+  el.hidden = false;
+}
+
+function showReveal(n){
+  if(solved['c'+n]) return;
+  const btn = document.getElementById('reveal'+n);
+  if(btn) btn.hidden = false;
+}
+
+function revealAnswer(n){
+  const expected = challengeMeta[n].expected;
+  const input = document.getElementById('input'+n);
+  if(input){ input.value = expected; }
+  // trigger the checker
+  window['checkChallenge'+n]();
+}
+
+// ===== Cinematic Console + Hint for C3 =====
 function emitNetworkNoise(){
   const lines=[
     '[SYS-ALERT] anomaly detected on port 443',
     '[TRACE] sniffing packet → decryption in progress...',
     '[HANDSHAKE] key-exchange complete',
-    '[DECRYPT] >>> FLAG{firewall_overlord}', // The flag they need
-    '[NOTE] This is your way in. Don’t screw it up.'
+    '[DECRYPT] >>> FLAG{overlord}', // The flag they need
+    '[NOTE] Pull lightly; alarms are sleepy, not blind.'
   ];
   console.log('%c— intranet link —', 'color:#ffb6c1; font-weight:bold;');
   lines.forEach(l => console.log('%c'+l, 'color:#5df2ff'));
@@ -89,7 +168,7 @@ function emitNetworkNoise(){
 "  \\___ \\ / _ \\ __/ _` | __| | __| | | | |\n" +
 "   ___) |  __/ || (_| | |_| | |_| | | | |\n" +
 "  |____/ \\___|\\__\\__,_|\\__|_|\\__|_|_|_|_|\n" +
-"  Find all flags to unlock the résumé.    \n", "color:#c38bff");
+"   Find the flags. Watch the city change.\n", "color:#c38bff");
 
   if(!solved.c3){
     const hintEl=document.getElementById('c3-hint');
@@ -97,73 +176,88 @@ function emitNetworkNoise(){
   }
 }
 
-// ——— challenges (creative flags) ———
-// C1: ROT(5) -> "Hello" -> forge "hello_world_order" -> FLAG{hello_world_order}
+// ===== Checkers =====
 function checkChallenge1(){
+  onFirstAttempt(1);
   const val=(document.getElementById('input1').value||'').trim();
-  const decoded=caesarShift('Mjqqt',5); // "Hello"
-  const expected='FLAG{hello_world_order}';
+  const expected=challengeMeta[1].expected; // FLAG{neon}
   if(val.toLowerCase()===expected.toLowerCase()){
-    setResult('result1','✅ Access node breached. “Welcome to the underground.”',true);
-    markSolved('c1',['about','challenge2']);
+    setResult('result1','✅ '+challengeMeta[1].punch,true);
+    markSolved('c1',['about','challenge2'],challengeMeta[1].punch);
   }else{
-    setResult('result1','❌ Tip: decode → "Hello". Then forge phrase "hello_world_order" and wrap: FLAG{...}');
+    attempts[1]++;
+    setResult('result1','❌ Try again. ROT(5) will treat letters gently.');
+    if(attempts[1]===3) showHint(1,0);
+    if(attempts[1]===5) showReveal(1);
   }
 }
 
-// C2: Base64 in HTML comment -> FLAG{pink_protocol_1337}
 function checkChallenge2(){
+  onFirstAttempt(2);
   const val=(document.getElementById('input2').value||'').trim();
-  const expected='FLAG{pink_protocol_1337}';
+  const expected=challengeMeta[2].expected;
   if(val===expected){
-    setResult('result2','✅ You’ve unlocked the Pink Protocol. “Things just got real.”',true);
-    markSolved('c2',['skills','challenge3']);
+    setResult('result2','✅ '+challengeMeta[2].punch,true);
+    markSolved('c2',['skills','challenge3'],challengeMeta[2].punch);
   }else{
-    setResult('result2','❌ Decode the Base64 from page source. The answer is a FLAG{...}.');
+    attempts[2]++;
+    setResult('result2','❌ You’re close. The answer is exactly what the Base64 decodes to.');
+    if(attempts[2]===3) showHint(2,0);
+    if(attempts[2]===5) showReveal(2);
   }
 }
 
-// C3: Console leak -> FLAG{firewall_overlord}
 function checkChallenge3(){
+  onFirstAttempt(3);
   const val=(document.getElementById('input3').value||'').trim();
-  const expected='FLAG{firewall_overlord}';
+  const expected=challengeMeta[3].expected;
   if(val===expected){
-    setResult('result3','✅ Firewall neutralized. “We’re in.”',true);
-    markSolved('c3',['projects','challenge4']);
+    setResult('result3','✅ '+challengeMeta[3].punch,true);
+    markSolved('c3',['projects','challenge4'],challengeMeta[3].punch);
   }else{
-    setResult('result3','❌ Check the Console for a line that begins with [DECRYPT].');
+    attempts[3]++;
+    setResult('result3','❌ Look for the [DECRYPT] line in Console.');
+    if(attempts[3]===3) showHint(3,0);
+    if(attempts[3]===5) showReveal(3);
   }
 }
 
-// C4: comment says BASE64 → REVERSE → result should be FLAG{certified_elite_h4x0r}
 function checkChallenge4(){
+  onFirstAttempt(4);
   const val=(document.getElementById('input4').value||'').trim();
-  const expected='FLAG{certified_elite_h4x0r}';
+  const expected=challengeMeta[4].expected;
   if(val===expected){
-    setResult('result4','✅ Credentials verified. “You don’t just get in — you belong here.”',true);
-    markSolved('c4',['certs','challenge5']);
+    setResult('result4','✅ '+challengeMeta[4].punch,true);
+    markSolved('c4',['certs','challenge5'],challengeMeta[4].punch);
   }else{
-    setResult('result4','❌ Hint: take the comment payload → Base64 decode → then reverse the string.');
+    attempts[4]++;
+    setResult('result4','❌ Follow the order: Base64 decode first, then reverse the text.');
+    if(attempts[4]===3) showHint(4,0);
+    if(attempts[4]===5) showReveal(4);
   }
 }
 
-// C5: 1st place codename -> FLAG{top_of_the_foodchain}
 function checkChallenge5(){
+  onFirstAttempt(5);
   const val=(document.getElementById('input5').value||'').trim();
-  const expected='FLAG{top_of_the_foodchain}';
+  const expected=challengeMeta[5].expected;
   if(val===expected){
-    setResult('result5','🏆 Apex unlocked. “You’re the predator now.”',true);
-    markSolved('c5',['achievements']);
+    setResult('result5','🏆 '+challengeMeta[5].punch,true);
+    markSolved('c5',['achievements'],challengeMeta[5].punch);
   }else{
-    setResult('result5','❌ Forge the codename for finishing #1: FLAG{top_of_the_foodchain}.');
+    attempts[5]++;
+    setResult('result5','❌ Think status. Short, decisive, four letters.');
+    if(attempts[5]===3) showHint(5,0);
+    if(attempts[5]===5) showReveal(5);
   }
 }
 
-// ——— init ———
+// ===== Init =====
 (function init(){
   const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
   restoreProgress(); emitNetworkNoise();
   const reset=document.getElementById('resetProgress');
   if(reset){ reset.addEventListener('click',()=>{ localStorage.removeItem('ctfProgress'); location.reload(); }); }
 })();
+
 
