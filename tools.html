@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,11 +14,10 @@
   <div class="bg-orb orb-c"></div>
   <div class="scanlines"></div>
 
+  <a class="skip-btn" href="index.html">← Back to CTF</a>
+
   <header class="header">
     <h1 class="typewriter">> toolkit: <span class="glitch" data-text="decode_analyze_reveal">decode_analyze_reveal</span></h1>
-    <nav class="nav">
-      <a href="index.html">← Back to Terminal</a>
-    </nav>
   </header>
 
   <main class="terminal grid">
@@ -25,7 +25,7 @@
       <div class="card-corners"></div>
       <h2>Caesar / ROT-N</h2>
       <div class="controls">
-        <input id="caesarText" placeholder="Encrypted text" />
+        <input id="caesarText" placeholder="Encrypted text (e.g., sjts)" />
         <input id="shift" type="number" value="5" />
         <button onclick="decodeCaesar()">decode</button>
       </div>
@@ -54,12 +54,13 @@
 
     <section class="card">
       <div class="card-corners"></div>
-      <h2>Page Scanner</h2>
-      <p class="muted">Find hidden <code>data-clue</code> attributes on the current page (try it on the main page via DevTools console).</p>
+      <h2>PNG Inspector (tEXt chunk)</h2>
+      <p class="muted">Choose a PNG (e.g., <code>ctf_stego.png</code>) to reveal embedded text chunks.</p>
       <div class="controls">
-        <button onclick="scanPage()">scan</button>
+        <input id="pngFile" type="file" accept="image/png" />
+        <button onclick="inspectPNG()">inspect</button>
       </div>
-      <p id="scanResult" class="result"></p>
+      <pre id="pngOut" class="result" style="white-space:pre-wrap"></pre>
     </section>
   </main>
 
@@ -92,16 +93,31 @@
       const t = document.getElementById("reverseText").value || "";
       document.getElementById("reverseResult").innerText = "Reversed: " + t.split("").reverse().join("");
     }
-    function scanPage() {
-      const clues = document.querySelectorAll("[data-clue]");
-      const out = clues.length
-        ? "Found clues: " + Array.from(clues).map(c => c.dataset.clue).join(", ")
-        : "No clues found here.";
-      document.getElementById("scanResult").innerText = out;
+    // Minimal PNG parser for tEXt chunks
+    async function inspectPNG(){
+      const f = document.getElementById('pngFile').files[0];
+      if(!f){ document.getElementById('pngOut').textContent = 'No file selected.'; return; }
+      const buf = new Uint8Array(await f.arrayBuffer());
+      const out = [];
+      const sig = [137,80,78,71,13,10,26,10];
+      for(let i=0;i<8;i++){ if(buf[i]!==sig[i]){ document.getElementById('pngOut').textContent='Not a PNG.'; return; } }
+      let p=8;
+      while(p < buf.length){
+        const len = (buf[p]<<24)|(buf[p+1]<<16)|(buf[p+2]<<8)|buf[p+3]; p+=4;
+        const type = String.fromCharCode(buf[p],buf[p+1],buf[p+2],buf[p+3]); p+=4;
+        const data = buf.slice(p, p+len); p+=len;
+        const crc = buf.slice(p, p+4); p+=4;
+        if(type==='tEXt'){
+          // tEXt = "keyword\0text"
+          const zero = data.indexOf(0);
+          const key = new TextDecoder().decode(data.slice(0,zero));
+          const val = new TextDecoder().decode(data.slice(zero+1));
+          out.push(`${key}: ${val}`);
+        }
+      }
+      document.getElementById('pngOut').textContent = out.length ? out.join('\n') : 'No tEXt chunks found.';
     }
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
-
-
