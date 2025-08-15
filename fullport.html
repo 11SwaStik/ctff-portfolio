@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Swastik Sharma — Full Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+  <div class="bg-orb orb-c"></div>
+  <div class="scanlines"></div>
+
+  <a class="skip-btn" href="index.html" title="Back to CTF">← Back to CTF</a>
+
+  <header class="header">
+    <h1 class="typewriter">> swastik@portfolio:~$ <span class="glitch" data-text="all_access_granted">all_access_granted</span></h1>
+  </header>
+
+  <main class="terminal">
+    <section class="card">
+      <div class="card-corners"></div>
+      <h2 class="neon-pulse">About Me</h2>
+      <p class="lead">I’m <strong>Swastik Sharma</strong> — B.Tech (CSE) @ Bennett University (2022–2026), CEH (v12). I build and break systems to understand how they really work.</p>
+      <ul>
+        <li>Focus: Ethical Hacking, Pentesting, Cyber Defense, SIEM</li>
+        <li>Languages: Python, C++, Shell, JavaScript</li>
+        <li>Tools: Burp Suite, Jira, Canva</li>
+      </ul>
+      <p><a href="https://www.linkedin.com/in/swastik-sharma-73184a252/" target="_blank">LinkedIn</a> ·
+         <a href="https://github.com/11SwaStik" target="_blank">GitHub</a></p>
+    </section>
+
+    <section class="card">
+      <div class="card-corners"></div>
+      <h2 class="neon-pulse">Skills</h2>
+      <ul class="cols">
+        <li><strong>Languages:</strong> Python, C++, Shell, JS</li>
+        <li><strong>Security:</strong> Pentest, SIEM, Blue Team</li>
+        <li><strong>Tools:</strong> Burp Suite, Jira, Canva</li>
+        <li><strong>CS:</strong> DSA, Networking</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <div class="card-corners"></div>
+      <h2 class="neon-pulse">Projects</h2>
+      <article class="proj">
+        <h3>Agni Shield — Context-Aware Firewall + L7 WAF</h3>
+        <ul>
+          <li>Admin dashboard for domain/IP policies and app-context rules</li>
+          <li>Browser extension blocks unwanted sites & IPv4s</li>
+          <li><strong>1st place</strong> in university exhibition (100+ teams)</li>
+        </ul>
+      </article>
+      <article class="proj">
+        <h3>EDUTECH</h3>
+        <ul>
+          <li>Saved 70–80% search time for learning videos</li>
+          <li>Quiz increased retention ~40%</li>
+          <li>Hardened against SQLi/XSS/DoS (~80% risk mitigated)</li>
+          <li><a href="https://edutech-seven.vercel.app" target="_blank">edutech-seven.vercel.app</a></li>
+        </ul>
+      </article>
+      <article class="proj">
+        <h3>Hash Cracker</h3>
+        <ul><li>MD5, SHA-1/256/384/512 — fast and accurate</li></ul>
+      </article>
+      <article class="proj">
+        <h3>Network Scanner</h3>
+        <ul><li>ARP + Nmap discovery; port mapping; speed benchmarking</li></ul>
+      </article>
+    </section>
+
+    <section class="card">
+      <div class="card-corners"></div>
+      <h2 class="neon-pulse">Certificates</h2>
+      <ul>
+        <li><strong>CEH v12</strong> — License <code>ECC3417659820</code></li>
+        <li>Networking & Cybersecurity MOOCs (Google, Microsoft)</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <div class="card-corners"></div>
+      <h2 class="neon-pulse">Achievements</h2>
+      <ul>
+        <li><strong>Agni Shield — 1st place</strong> among 100+ teams</li>
+        <li>Content Head @ Ciphers Club — helped 1,000+ students learn cybersecurity</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <div class="card-corners"></div>
+      <h2>Contact & Résumé</h2>
+      <p>
+        <a href="mailto:11swastiksharma@gmail.com">11swastiksharma@gmail.com</a> ·
+        <a href="https://www.linkedin.com/in/swastik-sharma-73184a252/" target="_blank">LinkedIn</a> ·
+        <a href="https://github.com/11SwaStik" target="_blank">GitHub</a>
+      </p>
+      <div class="resume-box">
+        <span class="blink">▌</span>
+        <a class="resume-btn" href="Swastik_Res1.pdf" download>Download Résumé (PDF)</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> Swastik Sharma · Full Portfolio</small>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
