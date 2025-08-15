@@ -11,7 +11,7 @@ body{
   line-height:1.6; overflow-x:hidden;
 }
 
-/* multicolor animated gradient background */
+/* background */
 .bg-gradient{
   position:fixed; inset:-10vmax; z-index:-4;
   background: conic-gradient(from 0deg at 50% 50%,
@@ -25,8 +25,6 @@ body{
   animation: spin 44s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* floating neon orbs */
 .bg-orb{ position:fixed; width:35vmax; height:35vmax; border-radius:50%;
   filter:blur(60px); opacity:.35; z-index:-3; mix-blend-mode:screen; }
 .orb-a{ left:-10vmax; top:-5vmax; background:radial-gradient(circle, var(--pink-hot), transparent 60%); animation: floatA 16s ease-in-out infinite; }
@@ -36,7 +34,7 @@ body{
 @keyframes floatB{ 0%,100%{transform:translateX(0)} 50%{transform:translateX(-25px)} }
 @keyframes floatC{ 0%,100%{transform:translate(0,0)} 50%{transform:translate(25px,-15px)} }
 
-/* subtle scanlines */
+/* scanlines */
 .scanlines::before{
   content:""; position:fixed; inset:0; z-index:-1;
   background: repeating-linear-gradient(
@@ -138,16 +136,29 @@ h1,h2,h3{
 .reveal{margin-top:6px; border-color:var(--cyan); color:var(--cyan)}
 .reveal:hover{background:var(--cyan); color:#000}
 
-/* confetti (CSS only) */
-.confetti{
-  position:fixed; inset:0; pointer-events:none; z-index:9999; overflow:hidden;
+/* confetti */
+.confetti{ position:fixed; inset:0; pointer-events:none; z-index:9999; overflow:hidden; }
+.confetti i{ position:absolute; width:8px; height:14px; opacity:.95; animation:fall 1.8s ease-out forwards; }
+@keyframes fall{ 0%{transform:translateY(-10vh) rotate(0deg)} 100%{transform:translateY(100vh) rotate(720deg)} }
+
+/* image preview */
+.img-wrap{margin:8px 0}
+.img-wrap img{border:1px solid rgba(255,182,193,.4); border-radius:8px}
+
+/* floating skip */
+.skip-btn {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  background: rgba(255, 182, 193, 0.95);
+  color: #000;
+  padding: 10px 14px;
+  font-weight: 700;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 0 12px rgba(255, 182, 193, 0.9);
+  z-index: 1000;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
 }
-.confetti i{
-  position:absolute; width:8px; height:14px; opacity:.95;
-  animation:fall 1.8s ease-out forwards;
-}
-@keyframes fall{
-  0%{transform:translateY(-10vh) rotate(0deg)}
-  100%{transform:translateY(100vh) rotate(720deg)}
-}
+.skip-btn:hover{ transform:translateY(-1px); background:#fff; box-shadow:0 0 18px rgba(255,182,193,1) }
 
