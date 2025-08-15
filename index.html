@@ -7,23 +7,23 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- ===== Hidden Comms / Clues ======================================= -->
-  <!-- C2 — Base64 of FLAG{cyber} -->
+  <!-- Level 2: Base64 string in source → FLAG{cyber} -->
   <!-- RkxBR3tjeWJlcn0= -->
 
-  <!-- C4 — BASE64 then REVERSE → final should read FLAG{elite} -->
-  <!-- fWV0aWxle0dBTEY= -->
-  <!-- ================================================================ -->
-
-  <!-- cyber background layers -->
+  <!-- Background layers -->
   <div class="bg-gradient"></div>
   <div class="bg-orb orb-a"></div>
   <div class="bg-orb orb-b"></div>
   <div class="bg-orb orb-c"></div>
   <div class="scanlines"></div>
 
+  <!-- Floating “skip to portfolio” button -->
+  <a class="skip-btn" href="full-portfolio.html" title="Skip the CTF — view full portfolio">
+    View Full Portfolio
+  </a>
+
   <header class="header">
-    <h1 class="typewriter">> swastik@portfolio:~$ <span class="glitch" data-text="access_terminal">access_terminal</span></h1>
+    <h1 class="typewriter">> swastik@ctf:~$ <span class="glitch" data-text="access_terminal">access_terminal</span></h1>
     <nav class="nav">
       <a href="tools.html" target="_blank">Hacker Toolkit</a>
       <button id="resetProgress" class="ghost">Reset Progress</button>
@@ -35,27 +35,25 @@
   </header>
 
   <main class="terminal">
-    <!-- CHALLENGE 1 -->
-    <section id="challenge1" class="card">
+    <!-- LEVEL 1 -->
+    <section id="level1" class="card">
       <div class="card-corners"></div>
-      <h2>Challenge 1 · Neon Cipher</h2>
-      <p class="muted">[INTERCEPTED] payload: <code>sjts</code> — key: <em>ROT(5)</em>. Submit as <code>FLAG{...}</code>.</p>
+      <h2>Level 1 · Neon Cipher</h2>
+      <p class="muted">Payload: <code>sjts</code> — Key: <em>ROT(5)</em>. Submit <code>FLAG{...}</code>.</p>
       <div class="controls">
         <input id="input1" placeholder="enter FLAG{...}" autocomplete="off" />
-        <button onclick="checkChallenge1()">submit</button>
+        <button onclick="checkLevel(1)">submit</button>
       </div>
       <p id="result1" class="result"></p>
       <p id="hint1" class="hint" hidden></p>
       <button id="reveal1" class="reveal" hidden onclick="revealAnswer(1)">Reveal Answer</button>
     </section>
 
-    <!-- ABOUT -->
+    <!-- ABOUT (unlocks after L1) -->
     <section id="about" class="card locked">
       <div class="card-corners"></div>
       <h2 class="neon-pulse">About Me</h2>
-      <p class="lead">
-        I’m <strong>Swastik Sharma</strong> — B.Tech (CSE) @ Bennett University (2022–2026), CEH (v12). I build and break systems to understand how they really work.
-      </p>
+      <p class="lead">I’m <strong>Swastik Sharma</strong> — B.Tech (CSE) @ Bennett University (2022–2026), CEH (v12). I build and break systems to understand how they really work.</p>
       <ul>
         <li>Focus: Ethical Hacking, Pentesting, Cyber Defense, SIEM</li>
         <li>Languages: Python, C++, Shell, JavaScript</li>
@@ -65,50 +63,50 @@
          <a href="https://github.com/11SwaStik" target="_blank">GitHub</a></p>
     </section>
 
-    <!-- CHALLENGE 2 -->
-    <section id="challenge2" class="card locked">
+    <!-- LEVEL 2 -->
+    <section id="level2" class="card locked">
       <div class="card-corners"></div>
-      <h2>Challenge 2 · Source Whisper</h2>
-      <p>“View Source” hides a Base64 transmission. Submit as <code>FLAG{...}</code>.</p>
-      <p class="muted">Tip: <em>CTRL/CMD+U</em> or right-click → View Page Source. Toolkit is allowed.</p>
+      <h2>Level 2 · Source Whisper</h2>
+      <p>There’s a Base64 transmission in the page source. Decode & wrap as <code>FLAG{...}</code>.</p>
+      <p class="muted">Tip: <em>CTRL/CMD+U</em> → find Base64. Or use the Toolkit.</p>
       <div class="controls">
         <input id="input2" placeholder="enter FLAG{...}" autocomplete="off" />
-        <button onclick="checkChallenge2()">submit</button>
+        <button onclick="checkLevel(2)">submit</button>
       </div>
       <p id="result2" class="result"></p>
       <p id="hint2" class="hint" hidden></p>
       <button id="reveal2" class="reveal" hidden onclick="revealAnswer(2)">Reveal Answer</button>
     </section>
 
-    <!-- SKILLS -->
+    <!-- SKILLS (unlocks after L2) -->
     <section id="skills" class="card locked">
       <div class="card-corners"></div>
       <h2 class="neon-pulse">Skills</h2>
       <ul class="cols">
         <li><strong>Languages:</strong> Python, C++, Shell, JS</li>
-        <li><strong>Security:</strong> Pentest, SIEM, Defense</li>
+        <li><strong>Security:</strong> Pentest, SIEM, Blue Team</li>
         <li><strong>Tools:</strong> Burp Suite, Jira, Canva</li>
         <li><strong>CS:</strong> DSA, Networking</li>
       </ul>
     </section>
 
-    <!-- CHALLENGE 3 -->
-    <section id="challenge3" class="card locked">
+    <!-- LEVEL 3 -->
+    <section id="level3" class="card locked">
       <div class="card-corners"></div>
-      <h2>Challenge 3 · Network Noise</h2>
-      <p>DevTools Console received a leaked decryption. Retrieve the codename. Submit as <code>FLAG{...}</code>.</p>
-      <p class="muted">Open DevTools (<code>F12</code>) → Console. Look for a <em>DECRYPT</em> line.</p>
-      <span id="c3-hint" class="hint-blink" style="display:none;">💡 Hint: Press F12 to open Developer Tools.</span>
+      <h2>Level 3 · Network Noise</h2>
+      <p>DevTools Console received a leaked decryption. Retrieve the codename.</p>
+      <p class="muted">Open DevTools (<code>F12</code>) → Console. Watch for a <em>[DECRYPT]</em> line.</p>
+      <span id="c3-hint" class="hint-blink" style="display:none;">💡 Hint: Press F12 and check the Console tab.</span>
       <div class="controls">
         <input id="input3" placeholder="enter FLAG{...}" autocomplete="off" />
-        <button onclick="checkChallenge3()">submit</button>
+        <button onclick="checkLevel(3)">submit</button>
       </div>
       <p id="result3" class="result"></p>
       <p id="hint3" class="hint" hidden></p>
       <button id="reveal3" class="reveal" hidden onclick="revealAnswer(3)">Reveal Answer</button>
     </section>
 
-    <!-- PROJECTS -->
+    <!-- PROJECTS (unlocks after L3) -->
     <section id="projects" class="card locked">
       <div class="card-corners"></div>
       <h2 class="neon-pulse">Projects</h2>
@@ -120,7 +118,6 @@
           <li><strong>1st place</strong> in university exhibition (100+ teams)</li>
         </ul>
       </article>
-
       <article class="proj">
         <h3>EDUTECH</h3>
         <ul>
@@ -130,37 +127,35 @@
           <li><a href="https://edutech-seven.vercel.app" target="_blank">edutech-seven.vercel.app</a></li>
         </ul>
       </article>
-
       <article class="proj">
         <h3>Hash Cracker</h3>
-        <ul>
-          <li>MD5, SHA-1/256/384/512 — fast and accurate</li>
-        </ul>
+        <ul><li>MD5, SHA-1/256/384/512 — fast and accurate</li></ul>
       </article>
-
       <article class="proj">
         <h3>Network Scanner</h3>
-        <ul>
-          <li>ARP + Nmap discovery; port mapping; speed benchmarking</li>
-        </ul>
+        <ul><li>ARP + Nmap discovery; port mapping; speed benchmarking</li></ul>
       </article>
     </section>
 
-    <!-- CHALLENGE 4 -->
-    <section id="challenge4" class="card locked">
+    <!-- LEVEL 4 -->
+    <section id="level4" class="card locked">
       <div class="card-corners"></div>
-      <h2>Challenge 4 · Analyst Credentials</h2>
-      <p>A scrambled codename hides in source. Follow the order: <em>BASE64 → REVERSE</em>.</p>
+      <h2>Level 4 · Image Signal</h2>
+      <p>Download the image and extract its hidden text chunk. No external tools needed — use the Toolkit PNG inspector.</p>
+      <figure class="img-wrap">
+        <img src="ctf_stego.png" alt="glow orb" width="120" height="120" />
+        <figcaption class="muted">Hint: PNG <code>tEXt</code> chunk carries a codename.</figcaption>
+      </figure>
       <div class="controls">
         <input id="input4" placeholder="enter FLAG{...}" autocomplete="off" />
-        <button onclick="checkChallenge4()">submit</button>
+        <button onclick="checkLevel(4)">submit</button>
       </div>
       <p id="result4" class="result"></p>
       <p id="hint4" class="hint" hidden></p>
       <button id="reveal4" class="reveal" hidden onclick="revealAnswer(4)">Reveal Answer</button>
     </section>
 
-    <!-- CERTIFICATES -->
+    <!-- CERTS (unlocks after L4) -->
     <section id="certs" class="card locked">
       <div class="card-corners"></div>
       <h2 class="neon-pulse">Certificates</h2>
@@ -170,21 +165,21 @@
       </ul>
     </section>
 
-    <!-- CHALLENGE 5 -->
-    <section id="challenge5" class="card locked">
+    <!-- LEVEL 5 -->
+    <section id="level5" class="card locked">
       <div class="card-corners"></div>
-      <h2>Challenge 5 · Crown of a Hundred</h2>
-      <p>“Out of a hundred teams, mine took the crown.” Forge the codename. Submit as <code>FLAG{...}</code>.</p>
+      <h2>Level 5 · The Riddle Gate</h2>
+      <p>“Crown among a hundred. Four letters. The point where the hunt ends.”</p>
       <div class="controls">
         <input id="input5" placeholder="enter FLAG{...}" autocomplete="off" />
-        <button onclick="checkChallenge5()">submit</button>
+        <button onclick="checkLevel(5)">submit</button>
       </div>
       <p id="result5" class="result"></p>
       <p id="hint5" class="hint" hidden></p>
       <button id="reveal5" class="reveal" hidden onclick="revealAnswer(5)">Reveal Answer</button>
     </section>
 
-    <!-- ACHIEVEMENTS -->
+    <!-- ACHIEVEMENTS (unlocks after L5) -->
     <section id="achievements" class="card locked">
       <div class="card-corners"></div>
       <h2 class="neon-pulse">Achievements</h2>
@@ -198,7 +193,7 @@
     <section id="final" class="card locked">
       <div class="card-corners"></div>
       <h2>Final Access · Contact & Résumé</h2>
-      <p>“You’ve crossed the grid clean. From here on, doors tend to open.”</p>
+      <p>“You crossed the grid clean. From here on, doors tend to open.”</p>
       <p>
         <a href="mailto:11swastiksharma@gmail.com">11swastiksharma@gmail.com</a> ·
         <a href="https://www.linkedin.com/in/swastik-sharma-73184a252/" target="_blank">LinkedIn</a> ·
