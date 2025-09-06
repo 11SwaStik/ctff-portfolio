@@ -19,7 +19,7 @@ h1, h2 {
 
 .subtitle {
   color: #00ff00;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 input, button {
@@ -53,19 +53,7 @@ button:hover {
   color: #00ff00;
 }
 
-.glitch {
-  position: relative;
-  font-size: 2.5em;
-  animation: glitch 1s infinite;
-}
-
-@keyframes glitch {
-  0% { text-shadow: 2px 2px #00ff00; }
-  25% { text-shadow: -2px -2px #00ff00; }
-  50% { text-shadow: 2px -2px #00ff00; }
-  75% { text-shadow: -2px 2px #00ff00; }
-  100% { text-shadow: 2px 2px #00ff00; }
-}
+.hidden { display: none; }
 
 /* Loading screen */
 #loading-screen {
@@ -78,5 +66,5 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
 }
-.hidden { display: none; }
