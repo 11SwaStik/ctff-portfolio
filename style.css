@@ -1,70 +1,89 @@
-body {
-  background: black;
-  color: #00ff00;
-  font-family: monospace;
-  margin: 0;
-  padding: 0;
-  text-align: center;
+:root{
+  --pink:#ffb6c1; --pink-strong:#ff69b4; --pink-hot:#ff1493;
+  --cyan:#5df2ff; --violet:#c38bff; --lime:#a8ff60; --amber:#ffc857;
+  --bg:#000;
 }
+/* FLAG{elite}  ← Level 4 lives here. */
 
-.container {
-  margin: 50px auto;
-  max-width: 800px;
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{margin:0; background:var(--bg); color:var(--pink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  line-height:1.55; overflow-x:hidden;
 }
+a{color:var(--pink)}
+a:hover{color:#ffd1e0}
 
-h1, h2 {
-  color: #00ff00;
-  text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+.bg-gradient{
+  position:fixed; inset:-10vmax; z-index:-4;
+  background: conic-gradient(from 0deg at 50% 50%,
+    rgba(255,182,193,.14),
+    rgba(93,242,255,.12),
+    rgba(195,139,255,.12),
+    rgba(168,255,96,.10),
+    rgba(255,200,87,.10),
+    rgba(255,182,193,.14));
+  filter: blur(42px);
+  animation: spin 44s linear infinite;
 }
+@keyframes spin{to{transform:rotate(360deg)}}
+.bg-orb{ position:fixed; width:35vmax; height:35vmax; border-radius:50%;
+  filter:blur(60px); opacity:.35; z-index:-3; mix-blend-mode:screen; }
+.orb-a{ left:-10vmax; top:-5vmax; background:radial-gradient(circle, var(--pink-hot), transparent 60%); animation: floatA 16s ease-in-out infinite; }
+.orb-b{ right:-8vmax; top:20vmax; background:radial-gradient(circle, var(--cyan), transparent 60%); animation: floatB 18s ease-in-out infinite; }
+.orb-c{ left:30vmax; bottom:-12vmax; background:radial-gradient(circle, var(--violet), transparent 60%); animation: floatC 20s ease-in-out infinite; }
+@keyframes floatA{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(20px)} }
+@keyframes floatB{ 0%,100%{transform:translateX(0)} 50%{transform:translateX(-25px)} }
+@keyframes floatC{ 0%,100%{transform:translate(0,0)} 50%{transform:translate(25px,-15px)} }
 
-.subtitle {
-  color: #00ff00;
-  opacity: 0.85;
-}
+.header{ padding:18px 18px 6px; border-bottom:1px solid rgba(255,182,193,.2);
+  display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.header .brand{display:flex; align-items:center; gap:10px}
+.badge{border:1px solid var(--pink); padding:4px 8px; border-radius:6px}
 
-input, button {
-  background: black;
-  border: 1px solid #00ff00;
-  color: #00ff00;
-  padding: 10px;
-  margin: 10px;
+.typewriter{
+  overflow:hidden; white-space:nowrap; border-right:2px solid var(--pink);
+  animation:typewriter 2.8s steps(36) .6s forwards, blink .9s step-end infinite; width:0
 }
+@keyframes typewriter{from{width:0} to{width:100%}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.1}}
 
-button:hover {
-  background: #00ff00;
-  color: black;
-  cursor: pointer;
+.container{max-width:1080px; margin:0 auto; padding:20px}
+.card{
+  position:relative;
+  border:1px solid rgba(255,182,193,.25);
+  background:rgba(0,0,0,.55);
+  padding:16px; margin:14px 0;
+  box-shadow: 0 0 18px rgba(255,182,193,.08);
+  backdrop-filter: blur(4px);
+  transition: box-shadow .2s ease, transform .2s ease;
 }
-
-.skip-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #00ff00;
-  color: black;
-  padding: 10px 15px;
-  font-weight: bold;
-  border-radius: 5px;
-  text-decoration: none;
-  box-shadow: 0 0 15px #00ff00;
+.card:hover{ box-shadow:0 0 24px rgba(93,242,255,.15); transform: translateY(-1px);}
+h1,h2,h3{ text-shadow:0 0 6px var(--pink),0 0 12px var(--cyan),0 0 18px var(--violet); }
+.neon-pulse{animation: neon 3s ease-in-out infinite}
+@keyframes neon{
+  0%,100%{text-shadow:0 0 6px var(--pink),0 0 12px var(--cyan),0 0 22px var(--violet)}
+  50%{text-shadow:0 0 6px var(--lime),0 0 14px var(--cyan),0 0 26px var(--pink-hot)}
 }
-.skip-btn:hover {
-  background: black;
-  color: #00ff00;
+.grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
+.btn{border:1px solid var(--pink); background:#000; color:var(--pink); padding:8px 12px; cursor:pointer}
+.btn:hover{background:var(--pink); color:#000}
+.fab{
+  position:fixed; bottom:18px; right:18px; z-index:1000;
+  background:rgba(255, 182, 193, 0.95); color:#000; border:none; font-weight:700;
+  border-radius:10px; padding:10px 14px; box-shadow:0 0 12px rgba(255, 182, 193, 0.9);
 }
-
-.hidden { display: none; }
+.music-toggle{
+  position:fixed; bottom:18px; left:18px; z-index:1000;
+  border:1px solid var(--pink); background:#000; color:var(--pink);
+  padding:8px 10px; border-radius:8px;
+}
+.footer{padding:20px; border-top:1px solid rgba(255,182,193,.2); text-align:center; opacity:.85}
 
 /* Loading screen */
-#loading-screen {
-  background: black;
-  color: #00ff00;
-  font-size: 1.2em;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
-}
+.loader{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column;
+  background:#000; color:var(--pink); }
+.loader h1{font-size:2rem}
+.scan{width:70vw; max-width:560px; height:2px; background:linear-gradient(90deg, transparent, var(--pink), transparent);
+  animation: sweep 1.6s linear infinite; margin-top:16px}
+@keyframes sweep{to{transform:translateX(100%)}}
