@@ -1,217 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Swastik Sharma — CTF Portfolio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Swastik Sharma - Portfolio</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Level 2: Base64 string in source → FLAG{cyber} -->
-  <!-- RkxBR3tjeWJlcn0= -->
-
-  <!-- Background layers -->
-  <div class="bg-gradient"></div>
-  <div class="bg-orb orb-a"></div>
-  <div class="bg-orb orb-b"></div>
-  <div class="bg-orb orb-c"></div>
-  <div class="scanlines"></div>
-
-  <!-- Floating “skip to portfolio” button -->
-  <a class="skip-btn" href="fullport.html" title="Skip the CTF — view full portfolio">
-    View Full Portfolio
-  </a>
-
-  <header class="header">
-    <h1 class="typewriter">> swastik@ctf:~$ <span class="glitch" data-text="access_terminal">access_terminal</span></h1>
-    <nav class="nav">
-      <a href="tools.html" target="_blank">Hacker Toolkit</a>
-      <button id="resetProgress" class="ghost">Reset Progress</button>
-    </nav>
-    <div class="progress-wrap">
-      <div id="progressBar" class="progress-bar"></div>
-      <div id="progressText" class="progress-text">Solved: 0 / 5</div>
-    </div>
-  </header>
-  <h1 class="glitch" data-text="CTF Portfolio">CTF Portfolio</h1>
-
-  <main class="terminal">
-    <!-- LEVEL 1 -->
-    <section id="level1" class="card">
-      <div class="card-corners"></div>
-      <h2>Level 1 · Neon Cipher</h2>
-      <p class="muted">Payload: <code>sjts</code> — Key: <em>ROT(5)</em>. Submit <code>FLAG{...}</code>.</p>
-      <div class="controls">
-        <input id="input1" placeholder="enter FLAG{...}" autocomplete="off" />
-        <button onclick="checkLevel(1)">submit</button>
+  <div class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <img src="profile.jpg" alt="Swastik Sharma" class="profile-pic">
+      <div>
+        <h1 class="glitch" data-text="Swastik Sharma">Swastik Sharma</h1>
+        <p class="subtitle">Cybersecurity • Developer • Hacker</p>
+        <a href="Swastik_Res1.pdf" class="btn" download>📄 Download Résumé</a>
       </div>
-      <p id="result1" class="result"></p>
-      <p id="hint1" class="hint" hidden></p>
-      <button id="reveal1" class="reveal" hidden onclick="revealAnswer(1)">Reveal Answer</button>
     </section>
 
-    <!-- ABOUT (unlocks after L1) -->
-    <section id="about" class="card locked">
-      <div class="card-corners"></div>
-      <h2 class="neon-pulse">About Me</h2>
-      <p class="lead">I’m <strong>Swastik Sharma</strong> — B.Tech (CSE) @ Bennett University (2022–2026), CEH (v12). I build and break systems to understand how they really work.</p>
-      <ul>
-        <li>Focus: Ethical Hacking, Pentesting, Cyber Defense, SIEM</li>
-        <li>Languages: Python, C++, Shell, JavaScript</li>
-        <li>Tools: Burp Suite, Jira, Canva</li>
-      </ul>
-      <p><a href="https://www.linkedin.com/in/swastik-sharma-73184a252/" target="_blank">LinkedIn</a> ·
-         <a href="https://github.com/11SwaStik" target="_blank">GitHub</a></p>
-    </section>
-
-    <!-- LEVEL 2 -->
-    <section id="level2" class="card locked">
-      <div class="card-corners"></div>
-      <h2>Level 2 · Source Whisper</h2>
-      <p>There’s a Base64 transmission in the page source. Decode & wrap as <code>FLAG{...}</code>.</p>
-      <p class="muted">Tip: <em>CTRL/CMD+U</em> → find Base64. Or use the Toolkit.</p>
-      <div class="controls">
-        <input id="input2" placeholder="enter FLAG{...}" autocomplete="off" />
-        <button onclick="checkLevel(2)">submit</button>
+    <!-- Skills -->
+    <section>
+      <h2 class="neon-pulse">⚡ Skills</h2>
+      <div class="grid">
+        <div class="card">🔐 Penetration Testing</div>
+        <div class="card">🌐 Web Security</div>
+        <div class="card">🐍 Python</div>
+        <div class="card">📜 JavaScript</div>
+        <div class="card">🤖 AI for Security</div>
+        <div class="card">🛡️ Firewall Dev</div>
       </div>
-      <p id="result2" class="result"></p>
-      <p id="hint2" class="hint" hidden></p>
-      <button id="reveal2" class="reveal" hidden onclick="revealAnswer(2)">Reveal Answer</button>
     </section>
 
-    <!-- SKILLS (unlocks after L2) -->
-    <section id="skills" class="card locked">
-      <div class="card-corners"></div>
-      <h2 class="neon-pulse">Skills</h2>
-      <ul class="cols">
-        <li><strong>Languages:</strong> Python, C++, Shell, JS</li>
-        <li><strong>Security:</strong> Pentest, SIEM, Blue Team</li>
-        <li><strong>Tools:</strong> Burp Suite, Jira, Canva</li>
-        <li><strong>CS:</strong> DSA, Networking</li>
-      </ul>
-    </section>
-
-    <!-- LEVEL 3 -->
-    <section id="level3" class="card locked">
-      <div class="card-corners"></div>
-      <h2>Level 3 · Network Noise</h2>
-      <p>DevTools Console received a leaked decryption. Retrieve the codename.</p>
-      <p class="muted">Open DevTools (<code>F12</code>) → Console. Watch for a <em>[DECRYPT]</em> line.</p>
-      <span id="c3-hint" class="hint-blink" style="display:none;">💡 Hint: Press F12 and check the Console tab.</span>
-      <div class="controls">
-        <input id="input3" placeholder="enter FLAG{...}" autocomplete="off" />
-        <button onclick="checkLevel(3)">submit</button>
+    <!-- Projects -->
+    <section>
+      <h2 class="neon-pulse">🛠️ Projects</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Agni Shield</h3>
+          <p>AI-powered Firewall + L7 WAF (1st place 🏆)</p>
+        </div>
+        <div class="card">
+          <h3>Spam Photo Classifier</h3>
+          <p>AI model detecting spam popups (98% accuracy)</p>
+        </div>
+        <div class="card">
+          <h3>Browser Extension</h3>
+          <p>Blocks unwanted sites/IPs, works on 100% devices</p>
+        </div>
       </div>
-      <p id="result3" class="result"></p>
-      <p id="hint3" class="hint" hidden></p>
-      <button id="reveal3" class="reveal" hidden onclick="revealAnswer(3)">Reveal Answer</button>
     </section>
 
-    <!-- PROJECTS (unlocks after L3) -->
-    <section id="projects" class="card locked">
-      <div class="card-corners"></div>
-      <h2 class="neon-pulse">Projects</h2>
-      <article class="proj">
-        <h3>Agni Shield — Context-Aware Firewall + L7 WAF</h3>
-        <ul>
-          <li>Admin dashboard for domain/IP policies and app-context rules</li>
-          <li>Browser extension blocks unwanted sites & IPv4s</li>
-          <li><strong>1st place</strong> in university exhibition (100+ teams)</li>
-        </ul>
-      </article>
-      <article class="proj">
-        <h3>EDUTECH</h3>
-        <ul>
-          <li>Saved 70–80% search time for learning videos</li>
-          <li>Quiz increased retention ~40%</li>
-          <li>Hardened against SQLi/XSS/DoS (~80% risk mitigated)</li>
-          <li><a href="https://edutech-seven.vercel.app" target="_blank">edutech-seven.vercel.app</a></li>
-        </ul>
-      </article>
-      <article class="proj">
-        <h3>Hash Cracker</h3>
-        <ul><li>MD5, SHA-1/256/384/512 — fast and accurate</li></ul>
-      </article>
-      <article class="proj">
-        <h3>Network Scanner</h3>
-        <ul><li>ARP + Nmap discovery; port mapping; speed benchmarking</li></ul>
-      </article>
-    </section>
-
-    <!-- LEVEL 4 -->
-    <section id="level4" class="card locked">
-      <div class="card-corners"></div>
-      <h2>Level 4 · Image Signal</h2>
-      <p>Download the image and extract its hidden text chunk. No external tools needed — use the Toolkit PNG inspector.</p>
-      <figure class="img-wrap">
-        <img src="ctf_stego.png" alt="glow orb" width="120" height="120" />
-        <figcaption class="muted">Hint: PNG <code>tEXt</code> chunk carries a codename.</figcaption>
-      </figure>
-      <div class="controls">
-        <input id="input4" placeholder="enter FLAG{...}" autocomplete="off" />
-        <button onclick="checkLevel(4)">submit</button>
+    <!-- Certifications -->
+    <section>
+      <h2 class="neon-pulse">🎓 Certifications</h2>
+      <div class="grid">
+        <div class="card">✔️ CEH v12</div>
+        <div class="card">✔️ Google Cybersecurity</div>
+        <div class="card">✔️ Microsoft Security Fundamentals</div>
       </div>
-      <p id="result4" class="result"></p>
-      <p id="hint4" class="hint" hidden></p>
-      <button id="reveal4" class="reveal" hidden onclick="revealAnswer(4)">Reveal Answer</button>
     </section>
 
-    <!-- CERTS (unlocks after L4) -->
-    <section id="certs" class="card locked">
-      <div class="card-corners"></div>
-      <h2 class="neon-pulse">Certificates</h2>
-      <ul>
-        <li><strong>CEH v12</strong> — License <code>ECC3417659820</code></li>
-        <li>Networking & Cybersecurity MOOCs (Google, Microsoft)</li>
-      </ul>
-    </section>
-
-    <!-- LEVEL 5 -->
-    <section id="level5" class="card locked">
-      <div class="card-corners"></div>
-      <h2>Level 5 · The Riddle Gate</h2>
-      <p>“Crown among a hundred. Four letters. The point where the hunt ends.”</p>
-      <div class="controls">
-        <input id="input5" placeholder="enter FLAG{...}" autocomplete="off" />
-        <button onclick="checkLevel(5)">submit</button>
+    <!-- Hobbies -->
+    <section>
+      <h2 class="neon-pulse">🎮 Hobbies</h2>
+      <div class="grid">
+        <div class="card">🏴‍☠️ CTFs</div>
+        <div class="card">♟️ Chess</div>
+        <div class="card">📸 Photography</div>
+        <div class="card">💻 Coding</div>
       </div>
-      <p id="result5" class="result"></p>
-      <p id="hint5" class="hint" hidden></p>
-      <button id="reveal5" class="reveal" hidden onclick="revealAnswer(5)">Reveal Answer</button>
     </section>
 
-    <!-- ACHIEVEMENTS (unlocks after L5) -->
-    <section id="achievements" class="card locked">
-      <div class="card-corners"></div>
-      <h2 class="neon-pulse">Achievements</h2>
-      <ul>
-        <li><strong>Agni Shield — 1st place</strong> among 100+ teams</li>
-        <li>Content Head @ Ciphers Club — helped 1,000+ students learn cybersecurity</li>
-      </ul>
-    </section>
-
-    <!-- FINAL -->
-    <section id="final" class="card locked">
-      <div class="card-corners"></div>
-      <h2>Final Access · Contact & Résumé</h2>
-      <p>“You crossed the grid clean. From here on, doors tend to open.”</p>
+    <!-- Contact -->
+    <section>
+      <h2 class="neon-pulse">📬 Contact</h2>
       <p>
-        <a href="mailto:11swastiksharma@gmail.com">11swastiksharma@gmail.com</a> ·
-        <a href="https://www.linkedin.com/in/swastik-sharma-73184a252/" target="_blank">LinkedIn</a> ·
-        <a href="https://github.com/11SwaStik" target="_blank">GitHub</a>
+        <a href="mailto:11swastiksharma@gmail.com" class="btn">📧 Email</a>
+        <a href="https://www.linkedin.com/in/swastik-sharma-73184a252/" target="_blank" class="btn">🔗 LinkedIn</a>
+        <a href="https://github.com/11SwaStik" target="_blank" class="btn">💻 GitHub</a>
       </p>
-      <div class="resume-box">
-        <span class="blink">▌</span>
-        <a class="resume-btn" href="Swastik_Res1.pdf" download>Download Résumé (PDF)</a>
-      </div>
     </section>
-  </main>
+  </div>
 
-  <footer class="footer">
-    <small>© <span id="year"></span> Swastik Sharma · CTF Portfolio</small>
-  </footer>
-
-  <script src="script.js"></script>
+  <!-- Floating button back to CTF -->
+  <a href="index.html" class="skip-btn">Play CTF</a>
 </body>
 </html>
-
